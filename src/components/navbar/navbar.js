@@ -11,8 +11,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
+import Link from "next/link";
 
-const pages = ["Home", "Movie", "My list", "Review"];
+const menuNav = [
+  { name: "Home", path: "/" },
+  { name: "Movie", path: "/movie" },
+  { name: "My List", path: "/myList" },
+  { name: "Review", path: "/review" },
+];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -33,8 +39,8 @@ function ResponsiveAppBar() {
             <Typography
               variant="body1"
               noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
+              component={Link}
+              href="#"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -50,8 +56,8 @@ function ResponsiveAppBar() {
             <Typography
               variant="body1"
               noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
+              component={Link}
+              href="#"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -65,7 +71,6 @@ function ResponsiveAppBar() {
               REVIEWS
             </Typography>
           </Box>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -95,22 +100,25 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {menuNav.map((page) => (
+                <MenuItem key={page.path} onClick={handleCloseNavMenu}>
+                  <Link href={page.path} passHref>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {menuNav.map((page) => (
               <Button
-                key={page}
+                key={page.path}
+                component={Link}
+                href={page.path}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
@@ -119,4 +127,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;
