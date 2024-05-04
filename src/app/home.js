@@ -1,5 +1,6 @@
 import { Grid, TextField, Button } from "@mui/material";
 
+
 export default function HomePage() {
   return (
     <Grid container style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
@@ -22,7 +23,7 @@ export default function HomePage() {
               display: "flex",
               alignItems: "center",
               borderRadius: "4px",
-              width: "25%",
+              width: "30%",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "#ffffff",
