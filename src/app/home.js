@@ -3,7 +3,7 @@ import { Grid, TextField, Button } from "@mui/material";
 
 export default function HomePage() {
   return (
-    <Grid container style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
+    <Grid container style={{ backgroundColor: "#000000", minHeight: "91.5vh" }}>
       <Grid item sx={{ mb: 8, width: "100%" }}>
         <Grid
           item

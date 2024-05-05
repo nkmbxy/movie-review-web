@@ -122,6 +122,39 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+          <Button
+            sx={{
+              borderRadius: 1.5,
+              padding: 1,
+              border: 1,
+              borderColor: "#FFFFFF",
+              color: "#FFFFFF",
+            }}
+          >
+            <Link href="/login" onClick={() => setActiveLink("")}>
+              Login
+            </Link>
+          </Button>
+          <Button
+            sx={{
+              borderRadius: 1.5,
+              padding: 1,
+              border: 1,
+              borderColor: "#FFFFFF",
+              color: "#FFFFFF",
+            }}
+          >
+            <Typography
+              sx={{
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              Logout
+            </Typography>
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>
