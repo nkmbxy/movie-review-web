@@ -42,7 +42,6 @@ export default function MyList() {
                     <Box key={item.img} sx={{ width: 200, height: 200, margin: 1}}>
                         <img
                             src={`${item.img}`}
-                            alt={item.title}
                             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         />
                     </Box>

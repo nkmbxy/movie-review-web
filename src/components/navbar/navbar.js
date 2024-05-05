@@ -12,6 +12,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
+import Divider from '@mui/material/Divider';
 
 const menuNav = [
   { name: "Home", path: "/" },
@@ -124,10 +125,7 @@ function ResponsiveAppBar() {
           </Box>
           <Button
             sx={{
-              borderRadius: 1.5,
               padding: 1,
-              border: 1,
-              borderColor: "#FFFFFF",
               color: "#FFFFFF",
             }}
           >
@@ -135,12 +133,16 @@ function ResponsiveAppBar() {
               Login
             </Link>
           </Button>
+          <Divider 
+            orientation="vertical" variant="middle" 
+            sx={{
+              height: 20,
+              borderColor: '#FFFFFF',
+            }}
+          />
           <Button
             sx={{
-              borderRadius: 1.5,
               padding: 1,
-              border: 1,
-              borderColor: "#FFFFFF",
               color: "#FFFFFF",
             }}
           >
