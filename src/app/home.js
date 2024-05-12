@@ -30,9 +30,6 @@ const moviesList = [
   },
   {
     img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
-  },
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
   }
 ]
 
@@ -83,7 +80,7 @@ export default function HomePage() {
         </Grid>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
           {threeTopMovie.map((item) => (
-            <Box key={item.img} sx={{ width: 400, height: 300, margin: 1,transition: "transform 0.3s ease",
+            <Box key={item.img} sx={{ width: 400, height: 300, marginInline: 1,transition: "transform 0.3s ease",
             "&:hover": {
               transform: "scale(1.1)",}}}>
                 <img
@@ -93,29 +90,111 @@ export default function HomePage() {
             </Box>
           ))}
         </Box>
-        <Box sx={{ width: '100%', maxWidth: 500 }}>
-          <Typography
-            variant="h6" 
-              sx={{
-                  ml: 5,
-                  marginTop:4,
-                  fontWeight: 700,
-                  letterSpacing: ".1rem",
-                  textDecoration: "none",
-                }}>
-              Made in Chinese 
-          </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {moviesList.map((item) => (
-                  <Box key={item.img} sx={{ width: 200, height: 200, margin: 1}}>
-                      <img
-                          src={`${item.img}`}
-                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      />
-                  </Box>
-              ))}
-          </Box>
+        <Typography
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop:4,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Chinese 
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+          {moviesList.map((item) => (
+              <Box key={item.img} sx={{ width: 200, height: 150, marginInline: '8px'}}>
+                  <img
+                      src={`${item.img}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+              </Box>
+          ))}
+        </Box>
+        <Typography
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop: 2,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in England 
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+          {moviesList.map((item) => (
+              <Box key={item.img} sx={{ width: 200, height: 150, marginInline: '8px'}}>
+                  <img
+                      src={`${item.img}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+              </Box>
+          ))}
+        </Box>
+        <Typography
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop: 2,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Japan 
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+          {moviesList.map((item) => (
+              <Box key={item.img} sx={{ width: 200, height: 150, marginInline: '8px'}}>
+                  <img
+                      src={`${item.img}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+              </Box>
+          ))}
+        </Box>
+        <Typography
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop: 2,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Korea 
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+          {moviesList.map((item) => (
+              <Box key={item.img} sx={{ width: 200, height: 150, marginInline: '8px'}}>
+                  <img
+                      src={`${item.img}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+              </Box>
+          ))}
+        </Box>
+        <Typography
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop: 2,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Thai 
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+          {moviesList.map((item) => (
+              <Box key={item.img} sx={{ width: 200, height: 150, marginInline: '8px'}}>
+                  <img
+                      src={`${item.img}`}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+              </Box>
+          ))}
+        </Box>
       </Grid>
     </Grid>
   );
