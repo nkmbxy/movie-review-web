@@ -18,7 +18,7 @@ const menuNav = [
   { name: "Home", path: "/" },
   { name: "Movie", path: "/movie" },
   { name: "My List", path: "/myList" },
-  { name: "Review", path: "/review" },
+  { name: "Review", path: "/createReview" },
 ];
 
 function ResponsiveAppBar() {
