@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
 const menuNav = [
   { name: "Home", path: "/" },
@@ -33,7 +33,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#0a0a0a" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#000000" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
@@ -133,11 +133,12 @@ function ResponsiveAppBar() {
               Login
             </Link>
           </Button>
-          <Divider 
-            orientation="vertical" variant="middle" 
+          <Divider
+            orientation="vertical"
+            variant="middle"
             sx={{
               height: 20,
-              borderColor: '#FFFFFF',
+              borderColor: "#FFFFFF",
             }}
           />
           <Button
