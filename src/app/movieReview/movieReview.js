@@ -9,15 +9,30 @@ import {
   Box,
   TextField,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  CardMedia,
+  IconButton,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import CardMedia from "@mui/material/CardMedia";
 import SendIcon from "@mui/icons-material/Send";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function HomePage() {
   const [value, setValue] = React.useState(5);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Grid
@@ -50,7 +65,7 @@ export default function HomePage() {
       </Grid>
 
       <Grid container style={{ display: "flex", flexDirection: "row" }}>
-        <Grid item style={{ width: "60%", backgroundColor: "pink" }}>
+        <Grid item style={{ width: "60%" }}>
           <Grid
             container
             spacing={4}
@@ -186,7 +201,7 @@ export default function HomePage() {
           </Grid>
         </Grid>
 
-        <Grid item style={{ width: "20%", backgroundColor: "green" }}>
+        <Grid item style={{ width: "20%" }}>
           <Grid
             container
             spacing={4}
@@ -209,11 +224,20 @@ export default function HomePage() {
               >
                 นามปากกา : สวยเริ่ด
               </Typography>
+              <Button>
+                <BookmarkBorderOutlinedIcon
+                  style={{
+                    fontSize: "2rem",
+                    color: "black",
+                    marginLeft: "50px",
+                  }}
+                />
+              </Button>
               <Typography
                 variant="body1"
                 sx={{
                   color: "#ffffff",
-                  marginTop: "70px",
+                  marginTop: "10px",
                   marginLeft: "9px",
                   fontSize: "15px",
                   fontWeight: "bold",
@@ -269,6 +293,54 @@ export default function HomePage() {
               >
                 ความตลก : 7.5/10
               </Typography>
+              <Grid item sx={{ marginLeft: "50px" }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "15px",
+                    backgroundColor: "red",
+                    width: "22px",
+                    height: "25px",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "red",
+                    },
+                  }}
+                  onClick={handleClickOpen}
+                >
+                  spoil!
+                </Button>
+                <Grid>
+                  <Dialog open={open} onClose={handleClose}>
+                    <IconButton
+                      onClick={handleClose}
+                      sx={{ marginLeft: "545px", marginTop: "15px" }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <DialogTitle
+                      sx={{
+                        marginTop: "-30px",
+                        fontSize: "22px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      สปอย
+                    </DialogTitle>
+                    <DialogContent>
+                      เรื่องราวมีความเป็นผู้ใหญ่มากขึ้นและตัวละครที่เป็นผู้ใหญ่จะเริ่มเข้ามามีบทบาทและเข้ามาช่วยเด็กทั้งสี่มากขึ้น
+                      อีกทั้งซีซั่นนี้ สนุกจริงไม่ติงนัง
+                      ในบางฉากผู้เขียนยังรู้สึกกลัวตัวละครอย่าง บิลลี่
+                      ที่บางครั้งเหมือนกับตัวละครโรคจิต
+                      อารมณ์รุนแรงและคาดเดาได้ยาก และ ดัสติน สตีฟ อิริก้า
+                      ตัวละครที่ไม่ถึงกับเป็นตัวหลักของเรื่องแต่มีความน่ารัก ตลก
+                      และปั่นสุด ๆ
+                      โดยเฉพาะเจ้าดัสตินในฉากซูซี่บอกให้ร้องเพลงในตอนที่เพื่อน ๆ
+                      กำลังโดนสัตว์ประไล่ล่าอยู่
+                    </DialogContent>
+                  </Dialog>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
