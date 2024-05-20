@@ -1,4 +1,4 @@
-import MovieReview from "./movieReview";
+import MovieReview from './movieReview';
 
 export default function MovieReviewPage() {
   return <MovieReview />;
