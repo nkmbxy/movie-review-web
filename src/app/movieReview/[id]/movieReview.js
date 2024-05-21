@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, use } from 'react';
 import {
   Grid,
   Typography,
@@ -22,10 +22,11 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import { getReviewByIDAPI } from '../../../api/review';
+import { getReviewByIdAPI, createCommentAPI } from '../../../api/review';
 import { useParams } from 'next/navigation';
 import AlertDialogConfirm from '../../../components/alertDialog/alertConfirm';
 import AlertDialogError from '../../../components/alertDialog/alertError';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function HomePage() {
   const [value, setValue] = useState(5);
@@ -36,10 +37,21 @@ export default function HomePage() {
   const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
   const [messageDialogError, setMessageDialogError] = useState('');
   const [titleDialogError, setTitleDialogError] = useState('');
+  const [moviesGenre, setMoviesGenre] = useState([]);
   const params = useParams();
+  const [commentText, setCommentText] = useState(''); // Add state for comment text
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleCommentSubmit = async e => {
+    e.preventDefault();
+    try {
+      // Call the API to create a new comment
+      await createCommentAPI(ReviewByIDAPI._id, commentText);
+      // Clear the comment text input after successful submission
+      setCommentText('');
+    } catch (error) {
+      console.error('Error creating comment:', error);
+      // Handle error accordingly
+    }
   };
 
   const handleClose = () => {
@@ -61,11 +73,21 @@ export default function HomePage() {
     setOpenAlertDialogError(false);
   };
 
-  const handleGetReviewByIDAPI = useCallback(async () => {
+  const chunkMoviesGenre = (moviews, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < moviews.length; i += chunkSize) {
+      chunks.push(moviews.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
+  const handleGetReviewByIdAPI = useCallback(async () => {
     try {
       const movie_Id = params?.id;
-      const res = await getReviewByIDAPI(movie_Id);
-      setReviewByIDAPI(res);
+      const res = await getReviewByIdAPI(movie_Id);
+      const chunkMovies = chunkMoviesGenre(res.moviesGenre, 3);
+      setReviewByIDAPI(res.review);
+      setMoviesGenre(chunkMovies);
     } catch (error) {
       console.log(error);
       setOpenAlertDialogError(true);
@@ -76,8 +98,8 @@ export default function HomePage() {
   }, [params?.id]);
 
   useEffect(() => {
-    handleGetReviewByIDAPI();
-  }, [handleGetReviewByIDAPI]);
+    handleGetReviewByIdAPI();
+  }, [handleGetReviewByIdAPI]);
 
   return (
     <Grid
@@ -177,19 +199,27 @@ export default function HomePage() {
                     alignItems: 'center',
                   }}
                 >
-                  <Divider style={{ marginTop: '158px', backgroundColor: '#dadada', width: '400px' }}></Divider>
                   <Box
                     sx={{
-                      display: 'flex',marginTop: '-7px'
+                      display: 'flex',
+                      marginTop: '-15px',
                     }}
                   >
                     <Avatar src="/broken-image.jpg" sx={{ margin: '15px', width: 30, height: 30 }} />
                     <TextField
-                      placeholder="แสดงความคิดเห็นของคุณ"
+                      placeholder="หล่อมากก"
                       className="w-full"
                       variant="standard"
                       type="text"
                       name="comment"
+                      InputProps={{
+                        readOnly: true,
+                        disableUnderline: true,
+                      }}
+                      InputLabelProps={{
+                        style: { color: 'grey' },
+                        shrink: true,
+                      }}
                       sx={{
                         width: 250,
                         marginTop: '13px',
@@ -198,13 +228,122 @@ export default function HomePage() {
                         },
                       }}
                     />
-                    <Button type="submit" sx={{ width: 30, height: 30, marginTop: '20px' }}>
-                      <SendIcon />
+                    <Button sx={{ width: 0, height: 25, marginTop: '15px' }}>
+                      <FavoriteBorderIcon sx={{ width: 20, height: 20 }} />
                     </Button>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      marginTop: '-15px',
+                    }}
+                  >
+                    <Avatar src="/broken-image.jpg" sx={{ margin: '15px', width: 30, height: 30 }} />
+                    <TextField
+                      placeholder="หล่อมากก"
+                      className="w-full"
+                      variant="standard"
+                      type="text"
+                      name="comment"
+                      InputProps={{
+                        readOnly: true,
+                        disableUnderline: true,
+                      }}
+                      InputLabelProps={{
+                        style: { color: 'grey' },
+                        shrink: true,
+                      }}
+                      sx={{
+                        width: 250,
+                        marginTop: '13px',
+                        '& .MuiInputBase-input::placeholder': {
+                          fontSize: '13.5px',
+                        },
+                      }}
+                    />
+                    <Button sx={{ width: 0, height: 25, marginTop: '15px' }}>
+                      <FavoriteBorderIcon sx={{ width: 20, height: 20 }} />
+                    </Button>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      marginTop: '-15px',
+                    }}
+                  >
+                    <Avatar src="/broken-image.jpg" sx={{ margin: '15px', width: 30, height: 30 }} />
+                    <TextField
+                      placeholder="หล่อมากก"
+                      className="w-full"
+                      variant="standard"
+                      type="text"
+                      name="comment"
+                      InputProps={{
+                        readOnly: true,
+                        disableUnderline: true,
+                      }}
+                      InputLabelProps={{
+                        style: { color: 'grey' },
+                        shrink: true,
+                      }}
+                      sx={{
+                        width: 250,
+                        marginTop: '13px',
+                        '& .MuiInputBase-input::placeholder': {
+                          fontSize: '13.5px',
+                        },
+                      }}
+                    />
+                    <Button sx={{ width: 0, height: 25, marginTop: '15px' }}>
+                      <FavoriteBorderIcon sx={{ width: 20, height: 20 }} />
+                    </Button>
+                  </Box>
+
+                  <Box sx={{ marginTop: '10px' }}>
+                    <Divider style={{ backgroundColor: '#dadada', width: '400px' }}></Divider>
+                    <Box
+                      sx={{
+                        marginTop: '-5px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Avatar
+                        src="/broken-image.jpg"
+                        sx={{ margin: '15px', width: 30, height: 30, marginTop: '20px' }}
+                      />
+                      <TextField
+                        placeholder="แสดงความคิดเห็นของคุณ"
+                        className="w-full"
+                        variant="standard"
+                        type="text"
+                        name="comment"
+                        value={commentText}
+                        onChange={e => setCommentText(e.target.value)}
+                        sx={{
+                          width: 250,
+                          marginTop: '10px',
+                          '& .MuiInputBase-input::placeholder': {
+                            fontSize: '14.5px',
+                          },
+                        }}
+                      />
+                      <Button
+                        type="submit"
+                        onClick={handleCommentSubmit}
+                        sx={{ width: 0, height: 30, marginTop: '20px' }}
+                      >
+                        <SendIcon />
+                      </Button>
+                    </Box>
                   </Box>
                 </Stack>
               </Card>
             </Grid>
+
             <Grid item>
               <Typography
                 variant="body1"
@@ -221,7 +360,7 @@ export default function HomePage() {
           </Grid>
         </Grid>
 
-        <Grid item style={{ width: '17.5%'}}>
+        <Grid item style={{ width: '17.5%' }}>
           <Grid
             container
             spacing={4}
@@ -244,7 +383,7 @@ export default function HomePage() {
               >
                 นามปากกา : {ReviewByIDAPI?.pseudonym || ''}
               </Typography>
-              <Button >
+              <Button>
                 <BookmarkBorderOutlinedIcon
                   style={{
                     fontSize: '2rem',
@@ -410,52 +549,20 @@ export default function HomePage() {
               showIndicators={true}
               showThumbs={false}
             >
-              <Grid container spacing={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Grid item>
-                  <CardMedia
-                    component="img"
-                    image="https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg"
-                    alt="Nineteen to Twenty"
-                    sx={{ width: 240, height: 140, margin: '3px' }}
-                  />
+              {moviesGenre.map((chunk, index) => (
+                <Grid container spacing={1} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  {chunk.map((image, idx) => (
+                    <Grid item key={idx}>
+                      <CardMedia
+                        component="img"
+                        image={image}
+                        alt={`Movie Genre ${index * 3 + idx + 1}`}
+                        sx={{ width: 240, height: 140, margin: '3px' }}
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
-                <Grid item>
-                  <CardMedia
-                    component="img"
-                    image="https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0"
-                    alt="The Fire Queen"
-                    sx={{ width: 240, height: 140, margin: '3px' }}
-                  />
-                </Grid>
-                <Grid item>
-                  <CardMedia
-                    component="img"
-                    image="https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg"
-                    alt="Hidden Love"
-                    sx={{ width: 240, height: 140, margin: '3px' }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid
-                container
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                }}
-              >
-                <Grid container spacing={1} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <Grid item>
-                    <CardMedia
-                      component="img"
-                      image="https://static.thairath.co.th/media/dFQROr7oWzulq5Fa5naPhbzeax2cKcZdIl82juMzR0xsHhs179QkFPuhEAIfH1hZqQ0.jpg"
-                      alt="Hidden Love"
-                      sx={{ width: 240, height: 140, margin: '3px' }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
+              ))}
             </Carousel>
           </Grid>
         </Grid>
