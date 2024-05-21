@@ -1,25 +1,47 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Grid, Typography, Link } from '@mui/material';
+import { loginAPI } from '../../api/user';
+import AlertDialogError from '../../components/alertDialog/alertError';
 
-export default function Signup() {
+export default function Login() {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
   });
+  const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
+  const [messageDialogError, setMessageDialogError] = useState('');
+  const [titleDialogError, setTitleDialogError] = useState('');
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    console.log('Form Data:', formData);
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
   };
+
+  const handleSubmit = useCallback(async e => {
+    try {
+      e.preventDefault();
+      const response = await loginAPI(e.target[0].value, e.target[1].value);
+      console.log(response.headers['x-auth-token']);
+    } catch (err) {
+      console.error('Error logging in:', err);
+      setOpenAlertDialogError(true);
+      setMessageDialogError('Failed to login');
+      setTitleDialogError('Error');
+    }
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
+      <AlertDialogError
+        openAlertDialog={openAlertDialogError}
+        handleOnCloseDialog={handleOnCloseDialog}
+        message={messageDialogError}
+        title={titleDialogError}
+      />
       <Grid
         container
         style={{

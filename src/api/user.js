@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 const signupAPI = async (email, password, username) => {
-  const response = await Axios.post(`http://localhost:4000/register`, {
+  const response = await Axios.post(`http://localhost:4000/user/register`, {
     email,
     password,
     username,
@@ -10,11 +10,11 @@ const signupAPI = async (email, password, username) => {
 };
 
 const loginAPI = async (email, password) => {
-  const response = await Axios.post(`http://localhost:4000/login`, {
+  const response = await Axios.post(`http://localhost:4000/user/login`, {
     email,
     password,
   });
-  return response.data;
+  return response;
 };
 
 module.exports = {
