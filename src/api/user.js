@@ -6,7 +6,7 @@ const signupAPI = async (email, password, username) => {
     password,
     username,
   });
-  return response.data;
+  return response;
 };
 
 const loginAPI = async (email, password) => {

@@ -3,8 +3,11 @@ import { useCallback, useState } from 'react';
 import { Grid, Typography, Link } from '@mui/material';
 import { loginAPI } from '../../api/user';
 import AlertDialogError from '../../components/alertDialog/alertError';
+import { useRouter } from 'next/navigation';
+import { useSetRecoilState, authState } from '../../store';
 
 export default function Login() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -12,6 +15,7 @@ export default function Login() {
   const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
   const [messageDialogError, setMessageDialogError] = useState('');
   const [titleDialogError, setTitleDialogError] = useState('');
+  const setAuth = useSetRecoilState(authState);
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,9 +29,11 @@ export default function Login() {
     try {
       e.preventDefault();
       const response = await loginAPI(e.target[0].value, e.target[1].value);
-      console.log(response.headers['x-auth-token']);
+      localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
+      setAuth(response.headers['x-auth-token']);
+      router.push('/');
     } catch (err) {
-      console.error('Error logging in:', err);
+      console.error('Error login:', err);
       setOpenAlertDialogError(true);
       setMessageDialogError('Failed to login');
       setTitleDialogError('Error');

@@ -1,32 +1,22 @@
-"use client";
+'use client';
 
-import { authState, useRecoilState } from "@store/index";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
-import Navbar from "./navbar";
+import { authState, useRecoilState } from '../../store';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Navbar from './navbar';
 
 const Navigation = () => {
-  const isMounted = useRef(false);
   const [auth, setAuth] = useRecoilState(authState);
   const router = useRouter();
   useEffect(() => {
-    if (!isMounted.current) {
-      const authStorage = localStorage.getItem("auth");
-      if (authStorage) {
-        const authParseJson = JSON.parse(authStorage);
-        setAuth(authParseJson);
-        router.push(`/`);
-      } else {
-        setAuth({ email: "", token: "" });
-        return;
-      }
-      return () => {
-        isMounted.current = true;
-      };
+    const token = localStorage.getItem('x-auth-token');
+    if (token) {
+      setAuth(token);
+      router.push(`/`);
     }
   }, [router, setAuth]);
 
-  return <Navbar token={auth?.token} />;
+  return <Navbar token={auth} />;
 };
 
 export default Navigation;
