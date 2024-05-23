@@ -18,6 +18,7 @@ export default function Login() {
   const [titleDialogError, setTitleDialogError] = useState('');
   const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
   const [openToast, setOpenToast] = useState(false);
+  const [toastText, setToastText] = useState('');
   const setAuth = useSetRecoilState(authState);
 
   const handleChange = e => {
@@ -38,9 +39,11 @@ export default function Login() {
       try {
         const response = await loginAPI(formData.email, formData.password);
         if (response?.status === 200) {
+          console.log('Login successful:', response);
           localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
           setAuth(response.headers['x-auth-token']);
           setOpenToast(true);
+          setToastText('Login Successful');
           router.push('/');
         } else {
           throw new Error('Login failed with status: ' + response?.status);
@@ -143,8 +146,9 @@ export default function Login() {
           <ToastSuccess
             openToast={openToast}
             handleCloseToast={handleCloseToast}
-            text="Login successfully"
+            text={toastText}
             showClose={true}
+            duration={10000}
           />
 
           <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />

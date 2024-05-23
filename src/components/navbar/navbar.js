@@ -1,31 +1,35 @@
-"use client";
-import * as React from "react";
-import { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Link from "next/link";
+'use client';
+import * as React from 'react';
+import { useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useSetRecoilState, authState } from '../../store';
 import Divider from '@mui/material/Divider';
 
 const menuNav = [
-  { name: "Home", path: "/" },
-  { name: "Movie", path: "/movie" },
-  { name: "My List", path: "/myList" },
-  { name: "Review", path: "/createReview" },
+  { name: 'Home', path: '/' },
+  { name: 'Movie', path: '/movie' },
+  { name: 'My List', path: '/myList' },
+  { name: 'Review', path: '/createReview' },
 ];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ token }) {
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElMovie, setAnchorElMovie] = useState(null);
+  const setAuth = useSetRecoilState(authState);
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
 
@@ -33,7 +37,7 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleOpenMovieMenu = (event) => {
+  const handleOpenMovieMenu = event => {
     setAnchorElMovie(event.currentTarget);
   };
 
@@ -42,10 +46,10 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#0a0a0a" }}>
+    <AppBar position="static" sx={{ backgroundColor: '#000000' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+          <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
             <Typography
               variant="body1"
               noWrap
@@ -53,12 +57,12 @@ function ResponsiveAppBar() {
               href="#"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
                 fontWeight: 700,
-                letterSpacing: ".1rem",
-                color: "#f3edce",
-                textDecoration: "none",
+                letterSpacing: '.1rem',
+                color: '#f3edce',
+                textDecoration: 'none',
               }}
             >
               MOVIE
@@ -70,18 +74,18 @@ function ResponsiveAppBar() {
               href="#"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
                 fontWeight: 700,
-                letterSpacing: ".1rem",
-                color: "#f3edce",
-                textDecoration: "none",
+                letterSpacing: '.1rem',
+                color: '#f3edce',
+                textDecoration: 'none',
               }}
             >
               REVIEWS
             </Typography>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -96,21 +100,21 @@ function ResponsiveAppBar() {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
+                vertical: 'bottom',
+                horizontal: 'left',
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: { xs: 'block', md: 'none' },
               }}
             >
-              {menuNav.map((page) => (
+              {menuNav.map(page => (
                 <MenuItem key={page.path} onClick={handleCloseNavMenu}>
                   <Link href={page.path} passHref>
                     <Typography textAlign="center">{page.name}</Typography>
@@ -119,15 +123,16 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {menuNav.map((page) => (
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {menuNav.map(page => (
               <React.Fragment key={page.path}>
-                {page.name === "Movie" ? (
+                {page.name === 'Movie' ? (
                   <>
                     <Button
                       component="div"
                       onClick={handleOpenMovieMenu}
-                      sx={{ my: 2, color: "white", display: "block" }}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page.name}
                     </Button>
@@ -135,13 +140,13 @@ function ResponsiveAppBar() {
                       id="menu-movie"
                       anchorEl={anchorElMovie}
                       anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
+                        vertical: 'bottom',
+                        horizontal: 'left',
                       }}
                       keepMounted
                       transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
+                        vertical: 'top',
+                        horizontal: 'left',
                       }}
                       open={Boolean(anchorElMovie)}
                       onClose={handleCloseMovieMenu}
@@ -193,7 +198,7 @@ function ResponsiveAppBar() {
                     component={Link}
                     href={page.path}
                     onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: "white", display: "block" }}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
                   >
                     {page.name}
                   </Button>
@@ -201,40 +206,42 @@ function ResponsiveAppBar() {
               </React.Fragment>
             ))}
           </Box>
-          <Button
-            sx={{
-              padding: 1,
-              color: "#FFFFFF",
-            }}
-          >
-            <Link href="/login" onClick={() => setActiveLink("")}>
-              Login
-            </Link>
-          </Button>
-          <Divider 
-            orientation="vertical" variant="middle" 
-            sx={{
-              height: 20,
-              borderColor: '#FFFFFF',
-            }}
-          />
-          <Button
-            sx={{
-              padding: 1,
-              color: "#FFFFFF",
-            }}
-          >
-            <Typography
+
+          {token ? (
+            <Button
               sx={{
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                color: "inherit",
-                textDecoration: "none",
+                padding: 1,
+                color: '#FFFFFF',
+              }}
+              onClick={() => {
+                localStorage.removeItem('x-auth-token');
+                setAuth('');
+                router.push('/login');
               }}
             >
-              Logout
-            </Typography>
-          </Button>
+              <Typography
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                Logout
+              </Typography>
+            </Button>
+          ) : (
+            <Button
+              sx={{
+                padding: 1,
+                color: '#FFFFFF',
+              }}
+            >
+              <Link href="/login" onClick={() => setActiveLink('')}>
+                Login
+              </Link>
+            </Button>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
