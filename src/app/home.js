@@ -120,7 +120,7 @@ export default function HomePage() {
                 letterSpacing: ".1rem",
                 textDecoration: "none",
               }}>
-            Made in England 
+            Made in English
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
           {moviesList.map((item) => (
@@ -141,7 +141,7 @@ export default function HomePage() {
                 letterSpacing: ".1rem",
                 textDecoration: "none",
               }}>
-            Made in Japan 
+            Made in Japanese
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
           {moviesList.map((item) => (
@@ -162,7 +162,7 @@ export default function HomePage() {
                 letterSpacing: ".1rem",
                 textDecoration: "none",
               }}>
-            Made in Korea 
+            Made in Korean
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
           {moviesList.map((item) => (

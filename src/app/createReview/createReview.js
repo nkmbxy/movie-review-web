@@ -7,11 +7,13 @@ import { styled } from '@mui/material/styles';
 export default function createReview() {
     const [reviewData, setReviewData] = useState({
         title: "",
+        writer: "",
         plot: "",
         spoiler: "",
         leadActor:"",
         director:"",
         genre: "",
+        country: "",
         funRates: "",
         finRates: "",
         sadRates: "",
@@ -21,6 +23,7 @@ export default function createReview() {
 
       const rates = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
       const genreItems = ['Action', 'Comedy', 'Drama', 'Fantasy', 'Investigation', 'Romance', 'Sci-fi', 'Thriller'];
+      const countriesItems = ['Chinese', 'English', 'Japanese', 'Korean', 'Thai'];
     
       const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -50,6 +53,16 @@ export default function createReview() {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setReviewData((prevData) => ({
+                ...prevData,
+                image: URL.createObjectURL(file),
+            }));
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(reviewData);
@@ -61,7 +74,7 @@ export default function createReview() {
             <Box sx={{
                 display: "flex",
                 flexDirection: "row",
-                width: "70%",
+                width: "80%",
                 borderRadius: "10px",
                 background: "#FFFFFF",
                 }}>
@@ -87,7 +100,20 @@ export default function createReview() {
                         sx={{
                             marginLeft: "2rem",
                             width: "90%",
-                            marginBottom: "1rem" 
+                            marginBottom: "2rem" 
+                        }}
+                    />
+                    <TextField 
+                        id="writer"
+                        name="writer"
+                        label="นามปากกา" 
+                        variant="standard" 
+                        value={reviewData.writer}
+                        onChange={handleInputChange}
+                        sx={{
+                            marginLeft: "2rem",
+                            width: "90%",
+                            marginBottom: "2rem" 
                         }}
                     />
                     <TextField 
@@ -100,7 +126,7 @@ export default function createReview() {
                         sx={{
                             marginLeft: "2rem",
                             width: "90%",
-                            marginBottom: "1rem" 
+                            marginBottom: "2rem" 
                         }}
                     />
                     <TextField 
@@ -113,7 +139,7 @@ export default function createReview() {
                         sx={{
                             marginLeft: "2rem",
                             width: "90%",
-                            marginBottom: "1rem" 
+                            marginBottom: "2rem" 
                         }}
                     />
                     <TextField 
@@ -126,7 +152,7 @@ export default function createReview() {
                         sx={{
                             marginLeft: "2rem",
                             width: "90%",
-                            marginBottom: "1rem" 
+                            marginBottom: "2rem" 
                         }}
                     />
                     <TextField 
@@ -139,29 +165,42 @@ export default function createReview() {
                         sx={{
                             marginLeft: "2rem",
                             width: "90%",
-                            marginBottom: "1rem" 
+                            marginBottom: "2rem" 
                         }}
                     />
                 </Box>
-                <Box className="right-side" sx={{width: "40%", marginTop: "100px", marginLeft: "2rem"}} >
-                    <Button className='image-upload'
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                        sx={{
-                            width: "70%",
-                            textWrap: "nowrap",
-                        }}
-                        onChange={handleSelectChange}>
-                        
-                        Upload image
-                        <VisuallyHiddenInput type="file" />
-                    </Button>
+                <Box className="right-side" sx={{width: "40%", margin: "2rem"}} >
+                    <Box sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            border: "1px solid #CCCCCC",
+                            width: "90%",
+                            height: "180px",
+                            marginBottom: ".5rem"
+                        }}>
+                            {reviewData.image ? (
+                                <img src={reviewData.image} alt="Uploaded" style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                            ) : (
+                                <Typography sx={{ color: "#ccc" }}>No image uploaded</Typography>
+                            )}
+                        </Box>
+                        <Button className='image-upload'
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<CloudUploadIcon />}
+                            sx={{
+                                width: "90%",
+                                textWrap: "nowrap",
+                            }}>
+                            Upload image
+                            <VisuallyHiddenInput type="file" onChange={handleImageChange} />
+                        </Button>
                     <InputLabel id="funRates" 
                         sx={{
-                                paddingTop: "15px",
+                                paddingTop: "10px",
                             }}
                         >ความสนุก :
                     </InputLabel>
@@ -182,7 +221,7 @@ export default function createReview() {
                     </Select>
                     <InputLabel id="funRates" 
                         sx={{
-                                paddingTop: "15px",
+                                paddingTop: "10px",
                             }}
                         >ความฟิน :
                     </InputLabel>
@@ -203,7 +242,7 @@ export default function createReview() {
                     </Select>
                     <InputLabel id="funRates" 
                         sx={{
-                                paddingTop: "15px",
+                                paddingTop: "10px",
                             }}
                         >ความเศร้า :
                     </InputLabel>
@@ -224,7 +263,7 @@ export default function createReview() {
                     </Select>
                     <InputLabel id="funRates" 
                         sx={{
-                                paddingTop: "15px",
+                                paddingTop: "10px",
                             }}
                         >ความตลก :
                     </InputLabel>
@@ -246,7 +285,7 @@ export default function createReview() {
                     <Typography
                         sx={{
                             color: "#606060",
-                            margin: "20px 0px 5px 0px",
+                            margin: "15px 0px 5px 0px",
                             maxWidth: "300px"
                         }}
                     >
@@ -278,10 +317,45 @@ export default function createReview() {
                             </Button>
                         ))}
                     </Box>
+                    <Typography
+                        sx={{
+                            color: "#606060",
+                            margin: "15px 0px 5px 0px",
+                            maxWidth: "300px"
+                        }}
+                    >
+                        ประเทศ
+                    </Typography>
+                    <Box className='countries-button'>
+                        {countriesItems.map((countriesItems, index) => (
+                            <Button 
+                                key={index}
+                                variant="outlined" 
+                                size="small"
+                                sx={{
+                                    borderColor: "#606060",
+                                    color: reviewData.country === countriesItems ? "#FFFFFF" : "#606060",
+                                    backgroundColor: reviewData.country === countriesItems ? "#606060" : "transparent",
+                                    borderColor: "#606060",
+                                    borderRadius: "20px",
+                                    display: "inline-block",
+                                    margin: "2px",
+                                    textAlign: "center",
+                                    fontSize: "10px",
+                                    "&:hover": {
+                                        backgroundColor: reviewData.country === countriesItems ? "#606060" : "transparent",
+                                    },
+                                }}
+                                onClick={() => handleSelectChange({ target: { name: "country", value: countriesItems } })}
+                            >
+                                {countriesItems}
+                            </Button>
+                        ))}
+                    </Box>
                     <Box sx={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        margin: "30px 40px"
+                        margin: "1rem"
                         }}>
                         <Button 
                             className='post-button'
@@ -292,7 +366,7 @@ export default function createReview() {
                                 fontSize: "14px",
                                 fontWeight: "500px",
                                 "&:hover": {
-                                    backgroundColor: "#404040", // Darker color on hover
+                                    backgroundColor: "#404040",
                                 },
                             }}
                         >
