@@ -1,4 +1,4 @@
-import { Grid, TextField, Button, Box, Typography } from "@mui/material";
+import { Grid, TextField, Button, Box, Typography, Tooltip } from "@mui/material";
 
 const threeTopMovie = [ //mock data
     {
@@ -33,7 +33,42 @@ const moviesList = [
   }
 ]
 
+const movieDetail = [
+  {
+    title: "Queenmaker",
+    cast: "Kim Heeae / Moon So-ri",
+    genre: "Drama",
+    plot: "ซีรีส์ที่จะเล่าเรื่องราวของผู้หญิง 2 คนที่ใช้ชีวิตแตกต่างกันอย่างสิ้นเชิง จับมือกันและละทิ้งทุกวิถีทางที่เคยมีมาทั้งหมด เพื่อสร้างโลกที่คงไว้ซึ่งความยุติธรรมและความจริง"
+  }
+]
+
+const movieDetails = [
+  {
+    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
+    title: "Queenmaker",
+    cast: "Kim Heeae / Moon So-ri",
+    genre: "Drama",
+    plot: "ซีรีส์ที่จะเล่าเรื่องราวของผู้หญิง 2 คนที่ใช้ชีวิตแตกต่างกันอย่างสิ้นเชิง จับมือกันและละทิ้งทุกวิถีทางที่เคยมีมาทั้งหมด เพื่อสร้างโลกที่คงไว้ซึ่งความยุติธรรมและความจริง"
+  }
+];
+
+const MovieTooltipContent = ({ detail }) => {
+  if (!detail) {
+    return null;
+  }
+  
+  return (
+    <Box sx={{ color: '#fff', padding: '10px', borderRadius: '4px', maxWidth: '400px' }}>
+      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{detail.title}</Typography>
+      <Typography variant="body2">นักแสดงนำ: {detail.cast}</Typography>
+      <Typography variant="body2">ประเภท: {detail.genre}</Typography>
+      <Typography variant="body2">{detail.plot}</Typography>
+    </Box>
+  );
+};
+
 export default function HomePage() {
+  const getMovieDetailByImg = (img) => movieDetails.find(detail => detail.img === img) || null;
   return (
     <Grid container style={{ backgroundColor: "#000000", minHeight: "91.5vh" }}>
       <Grid item sx={{ mb: 8, width: "100%" }}>
@@ -55,7 +90,7 @@ export default function HomePage() {
               display: "flex",
               alignItems: "center",
               borderRadius: "4px",
-              width: "30%",
+              width: "40%",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "#ffffff",
@@ -79,15 +114,25 @@ export default function HomePage() {
           </Grid>
         </Grid>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {threeTopMovie.map((item) => (
-            <Box key={item.img} sx={{ width: 400, height: 300, marginInline: 1,transition: "transform 0.3s ease",
-            "&:hover": {
-              transform: "scale(1.1)",}}}>
+        {threeTopMovie.map((item) => (
+            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+              <Box
+                sx={{
+                  width: 400,
+                  height: 300,
+                  marginInline: 1,
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                  }
+                }}
+              >
                 <img
-                    src={`${item.img}`}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  src={`${item.img}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
-            </Box>
+              </Box>
+            </Tooltip>
           ))}
         </Box>
         <Typography

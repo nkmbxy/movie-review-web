@@ -23,6 +23,7 @@ const menuNav = [
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElMovie, setAnchorElMovie] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,6 +31,14 @@ function ResponsiveAppBar() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleOpenMovieMenu = (event) => {
+    setAnchorElMovie(event.currentTarget);
+  };
+
+  const handleCloseMovieMenu = () => {
+    setAnchorElMovie(null);
   };
 
   return (
@@ -112,15 +121,84 @@ function ResponsiveAppBar() {
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {menuNav.map((page) => (
-              <Button
-                key={page.path}
-                component={Link}
-                href={page.path}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page.name}
-              </Button>
+              <React.Fragment key={page.path}>
+                {page.name === "Movie" ? (
+                  <>
+                    <Button
+                      component="div"
+                      onClick={handleOpenMovieMenu}
+                      sx={{ my: 2, color: "white", display: "block" }}
+                    >
+                      {page.name}
+                    </Button>
+                    <Menu
+                      id="menu-movie"
+                      anchorEl={anchorElMovie}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      open={Boolean(anchorElMovie)}
+                      onClose={handleCloseMovieMenu}
+                    >
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/action" passHref>
+                          <Typography textAlign="center">Action</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/comedy" passHref>
+                          <Typography textAlign="center">Comedy</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/drama" passHref>
+                          <Typography textAlign="center">Drama</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/fantasy" passHref>
+                          <Typography textAlign="center">Fantasy</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/investigation" passHref>
+                          <Typography textAlign="center">Investigation</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/romance" passHref>
+                          <Typography textAlign="center">Romance</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/sci-fi" passHref>
+                          <Typography textAlign="center">Sci-fi</Typography>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseMovieMenu}>
+                        <Link href="/movie/thriller" passHref>
+                          <Typography textAlign="center">Thriller</Typography>
+                        </Link>
+                      </MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <Button
+                    component={Link}
+                    href={page.path}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.name}
+                  </Button>
+                )}
+              </React.Fragment>
             ))}
           </Box>
           <Button

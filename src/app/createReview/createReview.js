@@ -130,8 +130,8 @@ export default function createReview() {
                         }}
                     />
                     <TextField 
-                        id="spoil"
-                        name="spoil"
+                        id="spoiler"
+                        name="spoiler"
                         label="สปอย" 
                         variant="standard" 
                         value={reviewData.spoiler}
@@ -355,7 +355,7 @@ export default function createReview() {
                     <Box sx={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        margin: "1rem"
+                        margin: "1rem 1rem 0rem 1rem"
                         }}>
                         <Button 
                             className='post-button'
