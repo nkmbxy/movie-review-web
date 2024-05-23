@@ -12,7 +12,6 @@ const Navigation = () => {
     const token = localStorage.getItem('x-auth-token');
     if (token) {
       setAuth(token);
-      router.push(`/`);
     }
   }, [router, setAuth]);
 

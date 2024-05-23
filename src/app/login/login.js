@@ -5,6 +5,7 @@ import { loginAPI } from '../../api/user';
 import AlertDialogError from '../../components/alertDialog/alertError';
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState, authState } from '../../store';
+import ToastSuccess from '../../components/toast';
 
 export default function Login() {
   const router = useRouter();
@@ -12,33 +13,47 @@ export default function Login() {
     email: '',
     password: '',
   });
-  const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
+
   const [messageDialogError, setMessageDialogError] = useState('');
   const [titleDialogError, setTitleDialogError] = useState('');
+  const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
   const setAuth = useSetRecoilState(authState);
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
+
   const handleOnCloseDialog = () => {
     setOpenAlertDialogError(false);
   };
 
-  const handleSubmit = useCallback(async e => {
-    try {
+  const handleSubmit = useCallback(
+    async e => {
       e.preventDefault();
-      const response = await loginAPI(e.target[0].value, e.target[1].value);
-      localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
-      setAuth(response.headers['x-auth-token']);
-      router.push('/');
-    } catch (err) {
-      console.error('Error login:', err);
-      setOpenAlertDialogError(true);
-      setMessageDialogError('Failed to login');
-      setTitleDialogError('Error');
-    }
-  }, []);
+      try {
+        const response = await loginAPI(formData.email, formData.password);
+        if (response?.status === 200) {
+          localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
+          setAuth(response.headers['x-auth-token']);
+          setOpenToast(true);
+          router.push('/');
+        } else {
+          throw new Error('Login failed with status: ' + response?.status);
+        }
+      } catch (err) {
+        console.error('Error login:', err);
+        setOpenAlertDialogError(true);
+        setMessageDialogError('Failed to login');
+        setTitleDialogError('Error');
+      }
+    },
+    [formData, router, setAuth]
+  );
 
   return (
     <form onSubmit={handleSubmit}>
@@ -125,6 +140,14 @@ export default function Login() {
           >
             Sign up
           </Link>
+          <ToastSuccess
+            openToast={openToast}
+            handleCloseToast={handleCloseToast}
+            text="Login successfully"
+            showClose={true}
+          />
+
+          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Grid>
       </Grid>
     </form>

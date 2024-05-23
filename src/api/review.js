@@ -7,14 +7,21 @@ const getReviewByIdAPI = async review_id => {
 
 const createCommentAPI = async (review_id, comment_text) => {
   try {
+    const token = localStorage.getItem('x-auth-token');
+    if (!token) {
+      throw new Error('No token found in localStorage');
+    }
+
     const response = await axios.post(
-      'http://localhost:4000/createComment',
+      'http://localhost:4000/comment/createComment',
       {
         review_id,
         comment_text,
       },
       {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     return response.data;
