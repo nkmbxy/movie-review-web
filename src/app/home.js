@@ -91,7 +91,7 @@ export default function HomePage() {
             sx={{
               backgroundColor: '#ffffff',
               display: 'flex',
-              alignItems: 'center',
+              // alignItems: 'center',
               borderRadius: '4px',
               width: '40%',
               '& .MuiOutlinedInput-root': {
