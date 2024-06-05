@@ -27,7 +27,9 @@ import { useParams } from 'next/navigation';
 import AlertDialogConfirm from '../../../components/alertDialog/alertConfirm';
 import AlertDialogError from '../../../components/alertDialog/alertError';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { makeStyles } from '@mui/styles';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 const useStyles = makeStyles({
   boxComment: {
@@ -60,6 +62,36 @@ export default function movieReviewPage() {
   const [titleDialogError, setTitleDialogError] = useState('');
   const [moviesGenre, setMoviesGenre] = useState([]);
   const [commentText, setCommentText] = useState('');
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [checkFavorite, setCheckFavorite] = useState(false);
+
+  const handleCheckFavorite = async () => {
+    try {
+      const response = await axiosInstance.get(`/favorite/favColor/${params.id}`);
+      setCheckFavorite(response.data.status);
+      console.log('checkFavorite:', response.data);
+    } catch (error) {
+      console.log('Error checking favorite:', error);
+    }
+  };
+
+  const handleFavorite = async () => {
+    try {
+      if (checkFavorite === false) {
+        const response = await axiosInstance.post(`/favorite/add/${params.id}`);
+        if (response.status === 200) {
+          setCheckFavorite(true);
+        }
+      } else {
+        const response = await axiosInstance.delete(`/favorite/delete/${params.id}`);
+        if (response.status === 200) {
+          setCheckFavorite(false);
+        }
+      }
+    } catch (error) {
+      console.log('Error checking favorite:', error);
+    }
+  };
 
   const handleCommentSubmit = useCallback(
     async e => {
@@ -128,9 +160,14 @@ export default function movieReviewPage() {
     }
   }, [params?.id]);
 
+  const toggleBookmark = useCallback(async () => {
+    setIsBookmarked(!isBookmarked);
+  });
+
   useEffect(() => {
     handleGetReviewByIdAPI();
-  }, [handleGetReviewByIdAPI]);
+    handleCheckFavorite();
+  }, [handleGetReviewByIdAPI, handleCheckFavorite]);
 
   const handleSubmit = useCallback(async e => {
     try {
@@ -139,7 +176,6 @@ export default function movieReviewPage() {
       localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
       setAuth(response.headers['x-auth-token']);
     } catch (err) {
-      console.error('Error login:', err);
       setOpenAlertDialogError(true);
       setMessageDialogError('Failed to login');
       setTitleDialogError('Error');
@@ -369,13 +405,12 @@ export default function movieReviewPage() {
                 >
                   นามปากกา : {ReviewByIDAPI?.pseudonym || ''}
                 </Typography>
-                <IconButton>
-                  <BookmarkBorderOutlinedIcon
-                    style={{
-                      fontSize: '2rem',
-                      color: '#ffffff',
-                    }}
-                  />
+                <IconButton onClick={handleFavorite}>
+                  {checkFavorite ? (
+                    <BookmarkIcon style={{ fontSize: '2rem', color: '#ff0000' }} />
+                  ) : (
+                    <BookmarkBorderOutlinedIcon style={{ fontSize: '2rem', color: '#ffffff' }} />
+                  )}
                 </IconButton>
                 <Typography
                   variant="body1"
