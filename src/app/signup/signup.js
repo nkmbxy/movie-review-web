@@ -38,8 +38,7 @@ export default function Signup() {
       try {
         const response = await signupAPI(formData.email, formData.password, formData.name);
         if (response?.status === 200) {
-          localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
-          setAuth(response.headers['x-auth-token']);
+          
           setOpenToast(true);
           router.push('/');
         } else {

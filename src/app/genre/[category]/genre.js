@@ -1,23 +1,27 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { Typography, Grid } from '@mui/material';
 import { axiosInstance } from '@/lib/axiosInstance';
+import { useParams } from 'next/navigation';
 
-export default function MyList() {
-  const [listFavorites, setListFavorites] = useState([]);
+export default function GenrePage() {
+  const [moviesSortByGenre, setMoviesSortByGenre] = useState([]);
+  const params = useParams();
 
-  const fetchListFavorites = async () => {
+  const fetchMoviesSortByGenre = async () => {
     try {
-      const response = await axiosInstance.get('/favorite/list');
-      setListFavorites(response.data);
+      const response = await axiosInstance.get(`/genre/movieSortByGenre?genre=${params.category}`);
+      setMoviesSortByGenre(response.data.data.movie_id);
     } catch (error) {
-      console.error('Error getting favorites:', error);
+      console.error('Error getting MoviesSortByGenre:', error);
       throw error;
     }
   };
+  console.log(moviesSortByGenre);
 
   useEffect(() => {
-    fetchListFavorites();
+    fetchMoviesSortByGenre();
   });
 
   return (
@@ -40,7 +44,7 @@ export default function MyList() {
               color: '#ffffff',
             }}
           >
-            MY LIST
+            {params.category.toUpperCase()}
           </Typography>
         </Grid>
         <Grid
@@ -55,9 +59,9 @@ export default function MyList() {
             padding: 3,
           }}
         >
-          {listFavorites.map(item => (
-            <Grid key={item.img} sx={{ width: 200, height: 400, margin: 1 }}>
-              <img src={`${item.movie_id.image}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          {moviesSortByGenre.map(item => (
+            <Grid key={item.img} sx={{ width: 200, height: 200, margin: 1 }}>
+              <img src={`${item.image}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </Grid>
           ))}
         </Grid>
