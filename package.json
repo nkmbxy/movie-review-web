@@ -12,7 +12,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.16",
-    "@mui/material": "^5.15.16",
+    "@mui/material": "^5.15.19",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@mui/styles": "^5.15.18",
     "@mui/system": "^5.15.15",
@@ -20,7 +20,9 @@
     "next": "^14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-easy-swipe": "^0.0.23",
     "react-hook-form": "^7.51.3",
+    "react-multi-carousel": "^2.8.5",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
     "recoil": "^0.7.7"
