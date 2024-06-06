@@ -3,16 +3,17 @@ import { Grid, TextField, Button, Box, Typography, Tooltip } from "@mui/material
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 
-const threeTopMovie = [ //mock data
-    {
-        img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-    },
-    {
-        img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
-    },
-    {
-        img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
-    }
+const threeTopMovie = [
+  //mock data
+  {
+    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
+  },
+  {
+    img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
+  },
+  {
+    img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
+  },
 ];
 
 const moviesList = [
@@ -46,7 +47,7 @@ const moviesList = [
   {
     img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
   }
-]
+];
 
 const movieDetails = [
   {
@@ -76,10 +77,12 @@ const MovieTooltipContent = ({ detail }) => {
   if (!detail) {
     return null;
   }
-  
+
   return (
     <Box sx={{ color: '#fff', padding: '10px', borderRadius: '4px', maxWidth: '400px' }}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{detail.title}</Typography>
+      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+        {detail.title}
+      </Typography>
       <Typography variant="body2">นักแสดงนำ: {detail.cast}</Typography>
       <Typography variant="body2">ประเภท: {detail.genre}</Typography>
       <Typography variant="body2">{detail.plot}</Typography>
@@ -88,44 +91,44 @@ const MovieTooltipContent = ({ detail }) => {
 };
 
 export default function HomePage() {
-  const getMovieDetailByImg = (img) => movieDetails.find(detail => detail.img === img) || null;
+  const getMovieDetailByImg = img => movieDetails.find(detail => detail.img === img) || null;
   return (
-    <Grid container style={{ backgroundColor: "#000000", minHeight: "91.5vh" }}>
-      <Grid item sx={{ mb: 8, width: "100%" }}>
+    <Grid container style={{ backgroundColor: '#000000', minHeight: '91.5vh' }}>
+      <Grid item sx={{ mb: 8, width: '100%' }}>
         <Grid
           item
           xs={12}
           sx={{
-            marginBottom: "20px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            marginBottom: '20px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <TextField
             placeholder="Search for topics of interest"
             variant="outlined"
             sx={{
-              backgroundColor: "#ffffff",
-              display: "flex",
-              alignItems: "center",
-              borderRadius: "4px",
-              width: "40%",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "#ffffff",
+              backgroundColor: '#ffffff',
+              display: 'flex',
+              // alignItems: 'center',
+              borderRadius: '4px',
+              width: '40%',
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#ffffff',
                 },
               },
             }}
           />
-          <Grid item sx={{ margin: "20px" }}>
+          <Grid item sx={{ margin: '20px' }}>
             <Button
               variant="contained"
               sx={{
-                backgroundColor: "#f3edce",
-                color: "#0a0a0a",
-                "&:hover": {
-                  backgroundColor: "#e0d4b3",
+                backgroundColor: '#f3edce',
+                color: '#0a0a0a',
+                '&:hover': {
+                  backgroundColor: '#e0d4b3',
                 },
               }}
             >
@@ -134,37 +137,36 @@ export default function HomePage() {
           </Grid>
         </Grid>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {threeTopMovie.map((item) => (
+          {threeTopMovie.map(item => (
             <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
               <Box
                 sx={{
                   width: 400,
                   height: 300,
                   marginInline: 1,
-                  transition: "transform 0.3s ease",
-                  "&:hover": {
-                    transform: "scale(1.1)",
-                  }
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
                 }}
               >
-                <img
-                  src={`${item.img}`}
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                />
+                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </Box>
             </Tooltip>
           ))}
         </Box>
         <Typography
-          variant="h6" 
-            sx={{
-                ml: 5,
-                marginTop:4,
-                fontWeight: 700,
-                letterSpacing: ".1rem",
-                textDecoration: "none",
-              }}>
-            Made in Chinese 
+          variant="h6"
+          sx={{
+            ml: 5,
+            marginTop: 4,
+            fontWeight: 700,
+            letterSpacing: '.1rem',
+            textDecoration: 'none',
+            color: '#ffffff',
+          }}
+        >
+          Made in Chinese
         </Typography>
         <Carousel
           infiniteLoop={false}
