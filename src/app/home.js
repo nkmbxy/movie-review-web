@@ -1,4 +1,7 @@
+'use client';
 import { Grid, TextField, Button, Box, Typography, Tooltip } from "@mui/material";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 
 const threeTopMovie = [ //mock data
     {
@@ -30,6 +33,18 @@ const moviesList = [
   },
   {
     img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
+  },
+  {
+    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
+  },
+  {
+    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
+  },
+  {
+    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
+  },
+  {
+    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
   }
 ]
 
@@ -151,28 +166,51 @@ export default function HomePage() {
               }}>
             Made in Chinese 
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+        <Carousel
+          infiniteLoop={false}
+          showThumbs={false}
+          centerMode={true}
+          centerSlidePercentage={16}
+          showArrows={true}
+          stopOnHover={true}
+          showStatus={false}
+          showIndicators={false}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            '& .control-dots': {
+              bottom: '-40px', // Adjust the position of the dot control
+            },
+            '& .dot': {
+              margin: '0 5px', // Adjust the spacing between dots
+            },
+          }}
+        >
           {moviesList.map((item) => (
-              <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
-              <Box key={item.img} 
-                   sx={{ 
-                      width: 200, 
-                      height: 150, 
-                      marginInline: '8px',
-                      transition: "transform 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                      }
-                    }}>
-                  <img
-                      src={`${item.img}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
+            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+              <Box
+                sx={{
+                  width: 200, 
+                  height: 150, 
+                  marginInline: '8px',
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                  }
+                }}
+              >
+                <img
+                  src={`${item.img}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
-        </Box>
-        <Typography
+        </Carousel>
+        {/* <Typography
           variant="h6" 
             sx={{
                 ml: 5,
@@ -299,7 +337,7 @@ export default function HomePage() {
               </Box>
             </Tooltip>
           ))}
-        </Box>
+        </Box> */}
       </Grid>
     </Grid>
   );
