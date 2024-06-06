@@ -210,134 +210,226 @@ export default function HomePage() {
             </Tooltip>
           ))}
         </Carousel>
-        {/* <Typography
-          variant="h6" 
-            sx={{
-                ml: 5,
-                marginTop: 2,
-                fontWeight: 700,
-                letterSpacing: ".1rem",
-                textDecoration: "none",
-              }}>
-            Made in English
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
-          {moviesList.map((item) => (
-              <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
-              <Box key={item.img} 
-                   sx={{ 
-                      width: 200, 
-                      height: 150, 
-                      marginInline: '8px',
-                      transition: "transform 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                      }
-                    }}>
-                  <img
-                      src={`${item.img}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
-              </Box>
-            </Tooltip>
-          ))}
-        </Box>
         <Typography
           variant="h6" 
             sx={{
                 ml: 5,
-                marginTop: 2,
+                marginTop:4,
                 fontWeight: 700,
                 letterSpacing: ".1rem",
                 textDecoration: "none",
               }}>
-            Made in Japanese
+            Made in England 
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+        <Carousel
+          infiniteLoop={false}
+          showThumbs={false}
+          centerMode={true}
+          centerSlidePercentage={16}
+          showArrows={true}
+          stopOnHover={true}
+          showStatus={false}
+          showIndicators={false}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            '& .control-dots': {
+              bottom: '-40px', // Adjust the position of the dot control
+            },
+            '& .dot': {
+              margin: '0 5px', // Adjust the spacing between dots
+            },
+          }}
+        >
           {moviesList.map((item) => (
-              <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
-              <Box key={item.img} 
-                   sx={{ 
-                      width: 200, 
-                      height: 150, 
-                      marginInline: '8px',
-                      transition: "transform 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                      }
-                    }}>
-                  <img
-                      src={`${item.img}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
+            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+              <Box
+                sx={{
+                  width: 200, 
+                  height: 150, 
+                  marginInline: '8px',
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                  }
+                }}
+              >
+                <img
+                  src={`${item.img}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
-        </Box>
+        </Carousel>
         <Typography
           variant="h6" 
             sx={{
                 ml: 5,
-                marginTop: 2,
+                marginTop:4,
                 fontWeight: 700,
                 letterSpacing: ".1rem",
                 textDecoration: "none",
               }}>
-            Made in Korean
+            Made in Japan 
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+        <Carousel
+          infiniteLoop={false}
+          showThumbs={false}
+          centerMode={true}
+          centerSlidePercentage={16}
+          showArrows={true}
+          stopOnHover={true}
+          showStatus={false}
+          showIndicators={false}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            '& .control-dots': {
+              bottom: '-40px', // Adjust the position of the dot control
+            },
+            '& .dot': {
+              margin: '0 5px', // Adjust the spacing between dots
+            },
+          }}
+        >
           {moviesList.map((item) => (
-              <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
-              <Box key={item.img} 
-                   sx={{ 
-                      width: 200, 
-                      height: 150, 
-                      marginInline: '8px',
-                      transition: "transform 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                      }
-                    }}>
-                  <img
-                      src={`${item.img}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
+            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+              <Box
+                sx={{
+                  width: 200, 
+                  height: 150, 
+                  marginInline: '8px',
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                  }
+                }}
+              >
+                <img
+                  src={`${item.img}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
-        </Box>
+        </Carousel>
         <Typography
           variant="h6" 
             sx={{
                 ml: 5,
-                marginTop: 2,
+                marginTop:4,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Korea 
+        </Typography>
+        <Carousel
+          infiniteLoop={false}
+          showThumbs={false}
+          centerMode={true}
+          centerSlidePercentage={16}
+          showArrows={true}
+          stopOnHover={true}
+          showStatus={false}
+          showIndicators={false}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            '& .control-dots': {
+              bottom: '-40px', // Adjust the position of the dot control
+            },
+            '& .dot': {
+              margin: '0 5px', // Adjust the spacing between dots
+            },
+          }}
+        >
+          {moviesList.map((item) => (
+            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+              <Box
+                sx={{
+                  width: 200, 
+                  height: 150, 
+                  marginInline: '8px',
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                  }
+                }}
+              >
+                <img
+                  src={`${item.img}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              </Box>
+            </Tooltip>
+          ))}
+        </Carousel>
+        <Typography
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop:4,
                 fontWeight: 700,
                 letterSpacing: ".1rem",
                 textDecoration: "none",
               }}>
             Made in Thai 
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', height: '150px'}}>
+        <Carousel
+          infiniteLoop={false}
+          showThumbs={false}
+          centerMode={true}
+          centerSlidePercentage={16}
+          showArrows={true}
+          stopOnHover={true}
+          showStatus={false}
+          showIndicators={false}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            '& .control-dots': {
+              bottom: '-40px', // Adjust the position of the dot control
+            },
+            '& .dot': {
+              margin: '0 5px', // Adjust the spacing between dots
+            },
+          }}
+        >
           {moviesList.map((item) => (
-              <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
-              <Box key={item.img} 
-                   sx={{ 
-                      width: 200, 
-                      height: 150, 
-                      marginInline: '8px',
-                      transition: "transform 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.1)",
-                      }
-                    }}>
-                  <img
-                      src={`${item.img}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
+            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+              <Box
+                sx={{
+                  width: 200, 
+                  height: 150, 
+                  marginInline: '8px',
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.1)",
+                  }
+                }}
+              >
+                <img
+                  src={`${item.img}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
-        </Box> */}
+        </Carousel>
       </Grid>
     </Grid>
   );
