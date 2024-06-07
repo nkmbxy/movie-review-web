@@ -31,9 +31,11 @@ export default function GenrePage() {
         style={{
           backgroundColor: '#000000',
           minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <Grid item sx={{ marginTop: '15px' }}>
+        <Grid item sx={{ marginTop: '20px' }}>
           <Typography
             variant="h4"
             sx={{
@@ -47,23 +49,23 @@ export default function GenrePage() {
             {params.category.toUpperCase()}
           </Typography>
         </Grid>
-        <Grid
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start',
-            alignContent: 'flex-start',
-            backgroundColor: '#000000',
-            width: '100%',
-            minHeight: '100vh',
-            padding: 3,
-          }}
-        >
-          {moviesSortByGenre.map(item => (
-            <Grid key={item.img} sx={{ width: 200, height: 200, margin: 1 }}>
-              <img src={`${item.image}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-            </Grid>
-          ))}
+
+        <Grid container sx={{ width: '100%', padding: 2 }}>
+          <Grid
+            item
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'nowrap',
+              overflowX: 'auto',
+            }}
+          >
+            {moviesSortByGenre.map(item => (
+              <Grid key={item.img} sx={{ margin: 1, minWidth: 150, height: 150 }}>
+                <img src={`${item.image}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     </>

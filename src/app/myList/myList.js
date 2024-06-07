@@ -18,7 +18,7 @@ export default function MyList() {
 
   useEffect(() => {
     fetchListFavorites();
-  });
+  }, []);
 
   return (
     <>
@@ -27,9 +27,11 @@ export default function MyList() {
         style={{
           backgroundColor: '#000000',
           minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <Grid item sx={{ marginTop: '15px' }}>
+        <Grid item sx={{ marginTop: '20px' }}>
           <Typography
             variant="h4"
             sx={{
@@ -42,24 +44,26 @@ export default function MyList() {
           >
             MY LIST
           </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-start',
-            alignContent: 'flex-start',
-            backgroundColor: '#000000',
-            width: '100%',
-            minHeight: '100vh',
-            padding: 3,
-          }}
-        >
-          {listFavorites.map(item => (
-            <Grid key={item.img} sx={{ width: 200, height: 400, margin: 1 }}>
-              <img src={`${item.movie_id.image}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+
+          <Grid container sx={{ width: '100%', padding: 2 }}>
+            <Grid
+              item
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                overflowX: 'auto',
+              }}
+            >
+              {listFavorites.map(item => (
+                <Grid key={item.img} sx={{ margin: 1, width: 250, height: 150 }}>
+                  {item.movie_id && item.movie_id.image && (
+                    <img src={`${item.movie_id.image}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  )}
+                </Grid>
+              ))}
             </Grid>
-          ))}
+          </Grid>
         </Grid>
       </Grid>
     </>
