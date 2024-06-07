@@ -1,6 +1,8 @@
 'use client';
 import { Grid, TextField, Button, Box, Typography, Tooltip, Rating } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Carousel } from 'react-responsive-carousel';
+import { useState, useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 
 const threeTopMovie = [
@@ -95,6 +97,48 @@ const MovieTooltipContent = ({ detail }) => {
 };
 
 export default function HomePage() {
+
+  const [chineseMovie, setChineseMovies] = useState([]);
+  const [englishMovie, setEnglishMovies] = useState([]);
+  const [japaneseMovie, setJapaneseMovies] = useState([]);
+  const [koreanMovie, setKoreanMovies] = useState([]);
+  const [thaiMovie, setThaiMovies] = useState([]);
+
+  const getChineseMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Chinese')
+    setChineseMovies(respond.data)
+  }
+  const getEnglishMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=English')
+    setEnglishMovies(respond.data)
+  }
+  const getJapaneseMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Japanese')
+    setJapaneseMovies(respond.data)
+  }
+  const getKoreanMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Korean')
+    setKoreanMovies(respond.data)
+  }
+  const getThaiMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Thai')
+    setThaiMovies(respond.data)
+  }
+
+  useEffect(() => {
+    getChineseMovies();
+    getEnglishMovies();
+    getJapaneseMovies();
+    getKoreanMovies();
+    getThaiMovies();
+  }, [])
+
+  console.log(chineseMovie);
+  console.log(englishMovie);
+  console.log(japaneseMovie);
+  console.log(koreanMovie);
+  console.log(thaiMovie);
+  
   const getMovieDetailByImg = img => movieDetails.find(detail => detail.img === img) || null;
   return (
     <Grid container style={{ backgroundColor: '#000000', minHeight: '91.5vh' }}>
@@ -188,10 +232,10 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
@@ -243,10 +287,10 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
@@ -298,10 +342,10 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px', 
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
@@ -353,10 +397,10 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
@@ -408,10 +452,10 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
