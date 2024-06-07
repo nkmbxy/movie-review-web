@@ -1,8 +1,9 @@
 'use client';
 import { Box, Typography, TextField, Select, Button, MenuItem, InputLabel } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 export default function createReview() {
   const [reviewData, setReviewData] = useState({
@@ -17,12 +18,14 @@ export default function createReview() {
     funRates: '',
     finRates: '',
     sadRates: '',
-    funnyRates: '',
-    image: null,
+    funnyRates: ''
   });
 
-  const rates = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  const genreItems = ['Action', 'Comedy', 'Drama', 'Fantasy', 'Investigation', 'Romance', 'Sci-fi', 'Thriller'];
+  const [genre, setGenre] = useState([]);
+
+  const [image, setImage] = useState();
+
+  const rates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const countriesItems = ['Chinese', 'English', 'Japanese', 'Korean', 'Thai'];
 
   const VisuallyHiddenInput = styled('input')({
@@ -36,6 +39,15 @@ export default function createReview() {
     whiteSpace: 'nowrap',
     width: 1,
   });
+
+  const getGenre = async () => {
+    const respond = await axiosInstance.get('/genre/getGenre')
+    setGenre(respond.data)
+  }
+
+  useEffect(() => {
+    getGenre()
+  }, [])
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -53,20 +65,37 @@ export default function createReview() {
     }));
   };
 
-  const handleImageChange = e => {
-    const file = e.target.files[0];
-    if (file) {
-      setReviewData(prevData => ({
-        ...prevData,
-        image: URL.createObjectURL(file),
-      }));
+  const handleImage = (e) => {
+    const { files } = e.target;
+    setImage(files[0]);
+  };
+
+  const formData = new FormData();
+  formData.append('title', reviewData.title);
+  formData.append('synopsis', reviewData.plot);
+  formData.append('pseudonym', reviewData.writer);
+  formData.append('spoil_text', reviewData.spoiler);
+  formData.append('actor', reviewData.leadActor);
+  formData.append('director', reviewData.director);
+  formData.append('score', reviewData.funRates);
+  formData.append('happy', reviewData.finRates);
+  formData.append('drama', reviewData.sadRates);
+  formData.append('joke', reviewData.funnyRates);
+  formData.append('genre_id', reviewData.genre);
+  formData.append('country', reviewData.country);
+  if (image) {
+    formData.append('file', image);
+  }
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axiosInstance.post("/review/createReview", formData).then((res) => {console.log(res);})
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log(reviewData);
-  };
 
   return (
     <>
@@ -184,9 +213,9 @@ export default function createReview() {
                 marginBottom: '.5rem',
               }}
             >
-              {reviewData.image ? (
+              {image ? (
                 <img
-                  src={reviewData.image}
+                  src={URL.createObjectURL(image)}
                   alt="Uploaded"
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
@@ -207,7 +236,7 @@ export default function createReview() {
               }}
             >
               Upload image
-              <VisuallyHiddenInput type="file" onChange={handleImageChange} />
+              <VisuallyHiddenInput type="file" onChange={handleImage} />
             </Button>
             <InputLabel
               id="funRates"
@@ -311,15 +340,15 @@ export default function createReview() {
               ประเภท
             </Typography>
             <Box className="genre-button">
-              {genreItems.map((genreItem, index) => (
+              {genre.map((genre, index) => (
                 <Button
                   key={index}
                   variant="outlined"
                   size="small"
                   sx={{
                     borderColor: '#606060',
-                    color: reviewData.genre === genreItem ? '#FFFFFF' : '#606060',
-                    backgroundColor: reviewData.genre === genreItem ? '#606060' : 'transparent',
+                    color: reviewData.genre === genre._id ? '#FFFFFF' : '#606060',
+                    backgroundColor: reviewData.genre === genre._id ? '#606060' : 'transparent',
                     borderColor: '#606060',
                     borderRadius: '20px',
                     display: 'inline-block',
@@ -327,12 +356,12 @@ export default function createReview() {
                     textAlign: 'center',
                     fontSize: '10px',
                     '&:hover': {
-                      backgroundColor: reviewData.genre === genreItem ? '#606060' : 'transparent',
+                      backgroundColor: reviewData.genre === genre._id ? '#606060' : 'transparent',
                     },
                   }}
-                  onClick={() => handleSelectChange({ target: { name: 'genre', value: genreItem } })}
+                  onClick={() => handleSelectChange({ target: { name: 'genre', value: genre._id } })}
                 >
-                  {genreItem}
+                  {genre.genre}
                 </Button>
               ))}
             </Box>
