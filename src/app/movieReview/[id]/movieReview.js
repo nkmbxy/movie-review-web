@@ -26,7 +26,6 @@ import { getReviewByIdAPI, createCommentAPI } from '../../../api/review';
 import { useParams } from 'next/navigation';
 import AlertDialogConfirm from '../../../components/alertDialog/alertConfirm';
 import AlertDialogError from '../../../components/alertDialog/alertError';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { makeStyles } from '@mui/styles';
 import { axiosInstance } from '@/lib/axiosInstance';
@@ -62,14 +61,12 @@ export default function movieReviewPage() {
   const [titleDialogError, setTitleDialogError] = useState('');
   const [moviesGenre, setMoviesGenre] = useState([]);
   const [commentText, setCommentText] = useState('');
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [checkFavorite, setCheckFavorite] = useState(false);
 
   const handleCheckFavorite = async () => {
     try {
-      const response = await axiosInstance.get(`/favorite/favColor/${params.id}`);
+      const response = await axiosInstance.get(`/favorite/favColor/${ReviewByIDAPI.movie_Id._id}`);
       setCheckFavorite(response.data.status);
-      console.log('checkFavorite:', response.data);
     } catch (error) {
       console.log('Error checking favorite:', error);
     }
@@ -78,12 +75,12 @@ export default function movieReviewPage() {
   const handleFavorite = async () => {
     try {
       if (checkFavorite === false) {
-        const response = await axiosInstance.post(`/favorite/add/${params.id}`);
+        const response = await axiosInstance.post(`/favorite/add/${ReviewByIDAPI.movie_Id._id}`);
         if (response.status === 200) {
           setCheckFavorite(true);
         }
       } else {
-        const response = await axiosInstance.delete(`/favorite/delete/${params.id}`);
+        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIDAPI.movie_Id._id}`);
         if (response.status === 200) {
           setCheckFavorite(false);
         }
@@ -160,10 +157,6 @@ export default function movieReviewPage() {
     }
   }, [params?.id]);
 
-  const toggleBookmark = useCallback(async () => {
-    setIsBookmarked(!isBookmarked);
-  });
-
   useEffect(() => {
     handleGetReviewByIdAPI();
     handleCheckFavorite();
@@ -173,8 +166,6 @@ export default function movieReviewPage() {
     try {
       e.preventDefault();
       const response = await createCommentAPI(e.target[0].value, e.target[1].value);
-      localStorage.setItem('x-auth-token', response.headers['x-auth-token']);
-      setAuth(response.headers['x-auth-token']);
     } catch (err) {
       setOpenAlertDialogError(true);
       setMessageDialogError('Failed to login');
@@ -315,9 +306,7 @@ export default function movieReviewPage() {
                               },
                             }}
                           />
-                          <Button sx={{ width: 0, height: 25, marginTop: '15px' }}>
-                            <FavoriteBorderIcon sx={{ width: 20, height: 20 }} />
-                          </Button>
+                          <Button sx={{ width: 0, height: 25, marginTop: '15px' }}></Button>
                         </Box>
                       ))}
                     </Box>
