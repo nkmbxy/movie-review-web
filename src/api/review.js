@@ -7,18 +7,10 @@ const getReviewByIdAPI = async review_id => {
 
 const createCommentAPI = async (review_id, comment_text) => {
   try {
-    const response = await axios.post(
-      'http://localhost:4000/comment/createComment',
-      {
-        review_id,
-        comment_text,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.post('http://localhost:4000/comment/createComment', {
+      review_id,
+      comment_text,
+    });
     return response.data;
   } catch (error) {
     console.error('Error creating comment:', error);

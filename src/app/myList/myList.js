@@ -55,8 +55,8 @@ export default function MyList() {
                 overflowX: 'auto',
               }}
             >
-              {listFavorites.map(item => (
-                <Grid key={item.img} sx={{ margin: 1, width: 250, height: 150 }}>
+              {listFavorites.map((item, index) => (
+                <Grid key={index} sx={{ margin: 1, width: 250, height: 150 }}>
                   {item.movie_id && item.movie_id.image && (
                     <img src={`${item.movie_id.image}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   )}

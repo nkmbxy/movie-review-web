@@ -65,22 +65,23 @@ export default function movieReviewPage() {
 
   const handleCheckFavorite = async () => {
     try {
-      const response = await axiosInstance.get(`/favorite/favColor/${ReviewByIdAPI.movie_Id._id}`);
+      const response = await axiosInstance.get(`/favorite/favColor/${ReviewByIdAPI?.movie_id?._id}`);
       setCheckFavorite(response.data.status);
     } catch (error) {
       console.log('Error checking favorite:', error);
     }
   };
+ 
 
   const handleFavorite = async () => {
     try {
       if (checkFavorite === false) {
-        const response = await axiosInstance.post(`/favorite/add/${ReviewByIdAPI.movie_Id._id}`);
+        const response = await axiosInstance.post(`/favorite/add/${ReviewByIdAPI?.movie_id?._id}`);
         if (response.status === 200) {
           setCheckFavorite(true);
         }
       } else {
-        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIdAPI.movie_Id._id}`);
+        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIdAPI?.movie_id?._id}`);
         if (response.status === 200) {
           setCheckFavorite(false);
         }
@@ -160,7 +161,7 @@ export default function movieReviewPage() {
   useEffect(() => {
     handleGetReviewByIdAPI();
     handleCheckFavorite();
-  }, [handleGetReviewByIdAPI, handleCheckFavorite]);
+  }, [handleGetReviewByIdAPI,handleCheckFavorite]);
 
   const handleSubmit = useCallback(async e => {
     try {

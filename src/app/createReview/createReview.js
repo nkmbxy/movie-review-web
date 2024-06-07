@@ -4,8 +4,12 @@ import React, { useState, useEffect } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import { axiosInstance } from '@/lib/axiosInstance';
+import AlertDialogError from '../../components/alertDialog/alertError';
+import ToastSuccess from '../../components/toast';
+import { useRouter } from 'next/navigation';
 
 export default function createReview() {
+  const router = useRouter();
   const [reviewData, setReviewData] = useState({
     title: '',
     writer: '',
@@ -22,10 +26,12 @@ export default function createReview() {
   });
 
   const [genre, setGenre] = useState([]);
-
   const [image, setImage] = useState();
+  const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
 
   const rates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const scoreRates = [0, 1, 2, 3, 4, 5];
   const countriesItems = ['Chinese', 'English', 'Japanese', 'Korean', 'Thai'];
 
   const VisuallyHiddenInput = styled('input')({
@@ -39,6 +45,14 @@ export default function createReview() {
     whiteSpace: 'nowrap',
     width: 1,
   });
+
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
+  };
+
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
 
   const getGenre = async () => {
     const respond = await axiosInstance.get('/genre/getGenre');
@@ -90,11 +104,16 @@ export default function createReview() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axiosInstance.post('/review/createReview', formData).then(res => {
-        console.log(res);
-      });
+      const res = await axiosInstance.post('/review/createReview', formData);
+      if (res?.status !== 200) {
+        setOpenAlertDialogError(true);
+      }
+      setOpenToast(true);
+      setTimeout(() => {
+        router.push(`/movieReview/${res.data.reviewId}`);
+      }, 2000);
     } catch (error) {
-      console.error(error);
+      setOpenAlertDialogError(true);
     }
   };
 
@@ -310,16 +329,6 @@ export default function createReview() {
               sx={{
                 paddingTop: '10px',
               }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
-              }}
             >
               ความสนุก :
             </InputLabel>
@@ -332,9 +341,9 @@ export default function createReview() {
               name="funRates"
               onChange={handleSelectChange}
             >
-              {rates.map(rate => (
-                <MenuItem key={rate} value={rate}>
-                  {rate}
+              {scoreRates.map(scoreRate => (
+                <MenuItem key={scoreRate} value={scoreRate}>
+                  {scoreRate}
                 </MenuItem>
               ))}
             </Select>
@@ -342,16 +351,6 @@ export default function createReview() {
               id="funRates"
               sx={{
                 paddingTop: '10px',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
               }}
             >
               ความฟิน :
@@ -376,16 +375,6 @@ export default function createReview() {
               sx={{
                 paddingTop: '10px',
               }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
-              }}
             >
               ความเศร้า :
             </InputLabel>
@@ -408,16 +397,6 @@ export default function createReview() {
               id="funRates"
               sx={{
                 paddingTop: '10px',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
               }}
             >
               ความตลก :
@@ -531,6 +510,13 @@ export default function createReview() {
                 Post
               </Button>
             </Box>
+            <ToastSuccess
+              openToast={openToast}
+              handleCloseToast={handleCloseToast}
+              text="Post Success"
+              showClose={true}
+            />
+            <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
           </Box>
         </Box>
       </form>
