@@ -1,5 +1,5 @@
 'use client';
-import { Grid, TextField, Button, Box, Typography, Tooltip } from '@mui/material';
+import { Grid, TextField, Button, Box, Typography, Tooltip, Rating } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
@@ -53,6 +53,7 @@ const movieDetails = [
   {
     img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
     title: 'Queenmaker',
+    rating: '5',
     cast: 'Kim Heeae / Moon So-ri',
     genre: 'Drama',
     plot: 'ซีรีส์ที่จะเล่าเรื่องราวของผู้หญิง 2 คนที่ใช้ชีวิตแตกต่างกันอย่างสิ้นเชิง จับมือกันและละทิ้งทุกวิถีทางที่เคยมีมาทั้งหมด เพื่อสร้างโลกที่คงไว้ซึ่งความยุติธรรมและความจริง',
@@ -60,6 +61,7 @@ const movieDetails = [
   {
     img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
     title: 'The Untamed',
+    rating: '4',
     cast: 'Xiao Zhan / Wang Yibo',
     genre: 'Fantasy',
     plot: 'เว่ยอู๋เซี่ยน(เซียวจ้าน)หนุ่มน้อยศิษย์ตระกูลเจียงผู้มีจิตใจเมตตาที่ภายหลังฝึกวิชามารและได้รับการขนานนามว่า ปรมาจารย์อี๋หลิง ได้ทำการล้มล้างตระกูลเวินจะได้รับความสำเร็จ แต่เพราะวิชาอันแกร่งกล้าของเขาต่างทำให้ผู้คนมากมายหวาดกลัว ยอดฝีมือจากทั่วทุกหนแห่งต่างพยายามทำลายล้างเว่ยอู๋เซี่ยน จนในที่สุดเขาหายสาบสูญไปอย่างไร้ร่องรอย...16 ปีต่อมา เว่ยอู๋เซี่ยนปรากฏตัวขึ้นอีกครั้งในคราบชายสวมหน้ากากนามโม่เสวียนอวี่(เซียวจ้าน) ทุกคนต่างจำเขาไม่ได้ เขาได้กลับมาพบกับคู่หูหลานวั่งจี(หวังอี้ป๋อ)จากตระกูลหลานแห่งกูซู เจียงเฉิง(วังจั๋วเฉิง)ศิษย์ผู้น้องจากตระกูลเจียงแห่งอวิ๋นเมิ่ง รวมถึงบุคคลอื่นในอดีต การกลับมาของเว่ยอู่เซี่ยนในครั้งนี้จะมาเพื่อคลี่คลายปมปริศนาในอดีตและความจริงที่ทุกคนต่างคาดไม่ถึง',
@@ -67,6 +69,7 @@ const movieDetails = [
   {
     img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
     title: 'Tomorrow I Will Date With Yesterday’s You',
+    rating: '4',
     cast: 'Sota Fukushi / Nana Komatsu',
     genre: 'Romance',
     plot: 'ทาคาโตชิ นักศึกษามหาวิทยาลัย ตกหลุมรักสาวสวยลึกลับบนรถไฟ เขาตามจีบเธอ จนรู้ว่าเธอชื่อ เอมิ พวกเขาตกลงจะเดทกัน 30 วัน และ ในวันสุดท้าย เมื่อ ทาคาโตชิ สารภาพรัก กับ เธอ เขาถึงรู้ว่า ความรักของพวกเขาไม่มีวันเป็นไปได้ เพราะ โลกของพวกเขาคือโลกคู่ขนานที่ทุก ๆ 5 ปี เวลาจะมาบรรจบกัน',
@@ -83,6 +86,7 @@ const MovieTooltipContent = ({ detail }) => {
       <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
         {detail.title}
       </Typography>
+      <Rating name="rating" value={detail.rating} readOnly />
       <Typography variant="body2">นักแสดงนำ: {detail.cast}</Typography>
       <Typography variant="body2">ประเภท: {detail.genre}</Typography>
       <Typography variant="body2">{detail.plot}</Typography>
