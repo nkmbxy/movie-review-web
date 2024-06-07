@@ -18,7 +18,7 @@ export default function createReview() {
     funRates: '',
     finRates: '',
     sadRates: '',
-    funnyRates: ''
+    funnyRates: '',
   });
 
   const [genre, setGenre] = useState([]);
@@ -41,13 +41,13 @@ export default function createReview() {
   });
 
   const getGenre = async () => {
-    const respond = await axiosInstance.get('/genre/getGenre')
-    setGenre(respond.data)
-  }
+    const respond = await axiosInstance.get('/genre/getGenre');
+    setGenre(respond.data);
+  };
 
   useEffect(() => {
-    getGenre()
-  }, [])
+    getGenre();
+  }, []);
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -65,7 +65,7 @@ export default function createReview() {
     }));
   };
 
-  const handleImage = (e) => {
+  const handleImage = e => {
     const { files } = e.target;
     setImage(files[0]);
   };
@@ -86,34 +86,37 @@ export default function createReview() {
   if (image) {
     formData.append('file', image);
   }
-  
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axiosInstance.post("/review/createReview", formData).then((res) => {console.log(res);})
+      await axiosInstance.post('/review/createReview', formData).then(res => {
+        console.log(res);
+      });
     } catch (error) {
       console.error(error);
     }
   };
 
-
   return (
     <>
-      <form className="reviewForm" style={{ display: 'flex', justifyContent: 'center' }} onSubmit={handleSubmit}>
+      <form style={{ display: 'flex', justifyContent: 'center', backgroundColor: '#000000' }} onSubmit={handleSubmit}>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            width: '80%',
+            width: '75%',
             borderRadius: '10px',
             background: '#FFFFFF',
+            marginTop: '20px',
+            padding: '3px',
           }}
         >
-          <Box className="left-side" sx={{ width: '60%' }}>
+          <Box sx={{ width: '60%' }}>
             <Typography
               variant="h4"
               sx={{
-                paddingTop: '1rem',
+                paddingTop: '2px',
                 margin: '2rem',
                 fontWeight: 700,
                 textDecoration: 'none',
@@ -134,6 +137,16 @@ export default function createReview() {
                 width: '90%',
                 marginBottom: '2rem',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             />
             <TextField
               id="writer"
@@ -147,11 +160,23 @@ export default function createReview() {
                 width: '90%',
                 marginBottom: '2rem',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             />
             <TextField
               id="plot"
               name="plot"
               label="เรื่องย่อ"
+              multiline
+              rows={4}
               variant="standard"
               value={reviewData.plot}
               onChange={handleInputChange}
@@ -160,11 +185,23 @@ export default function createReview() {
                 width: '90%',
                 marginBottom: '2rem',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             />
             <TextField
               id="spoiler"
               name="spoiler"
               label="สปอย"
+              multiline
+              rows={4}
               variant="standard"
               value={reviewData.spoiler}
               onChange={handleInputChange}
@@ -172,6 +209,16 @@ export default function createReview() {
                 marginLeft: '2rem',
                 width: '90%',
                 marginBottom: '2rem',
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
               }}
             />
             <TextField
@@ -186,6 +233,16 @@ export default function createReview() {
                 width: '90%',
                 marginBottom: '2rem',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             />
             <TextField
               id="director"
@@ -199,9 +256,19 @@ export default function createReview() {
                 width: '90%',
                 marginBottom: '2rem',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             />
           </Box>
-          <Box className="right-side" sx={{ width: '40%', margin: '2rem' }}>
+          <Box sx={{ width: '40%', margin: '2rem' }}>
             <Box
               sx={{
                 display: 'flex',
@@ -224,7 +291,6 @@ export default function createReview() {
               )}
             </Box>
             <Button
-              className="image-upload"
               component="label"
               role={undefined}
               variant="contained"
@@ -233,6 +299,7 @@ export default function createReview() {
               sx={{
                 width: '90%',
                 textWrap: 'nowrap',
+                backgroundColor: '#848484',
               }}
             >
               Upload image
@@ -242,6 +309,16 @@ export default function createReview() {
               id="funRates"
               sx={{
                 paddingTop: '10px',
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
               }}
             >
               ความสนุก :
@@ -266,6 +343,16 @@ export default function createReview() {
               sx={{
                 paddingTop: '10px',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             >
               ความฟิน :
             </InputLabel>
@@ -288,6 +375,16 @@ export default function createReview() {
               id="funRates"
               sx={{
                 paddingTop: '10px',
+              }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
               }}
             >
               ความเศร้า :
@@ -312,6 +409,16 @@ export default function createReview() {
               sx={{
                 paddingTop: '10px',
               }}
+              InputProps={{
+                style: {
+                  fontSize: '16px',
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  fontSize: '18px',
+                },
+              }}
             >
               ความตลก :
             </InputLabel>
@@ -335,11 +442,13 @@ export default function createReview() {
                 color: '#606060',
                 margin: '15px 0px 5px 0px',
                 maxWidth: '300px',
+                fontSize: '18px',
               }}
             >
               ประเภท
             </Typography>
-            <Box className="genre-button">
+
+            <Box>
               {genre.map((genre, index) => (
                 <Button
                   key={index}
@@ -374,7 +483,7 @@ export default function createReview() {
             >
               ประเทศ
             </Typography>
-            <Box className="countries-button">
+            <Box>
               {countriesItems.map((countriesItems, index) => (
                 <Button
                   key={index}
@@ -408,10 +517,9 @@ export default function createReview() {
               }}
             >
               <Button
-                className="post-button"
                 type="submit"
                 sx={{
-                  backgroundColor: '#606060',
+                  backgroundColor: '#848484',
                   color: '#FFFFFF',
                   fontSize: '14px',
                   fontWeight: '500px',
