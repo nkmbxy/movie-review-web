@@ -9,9 +9,20 @@ import { useNavigate } from "react-router-dom";
 
 
 const MovieTooltipContent = ({ detail }) => {
+
+  const router = useRouter();
+
   if (!detail) {
     return null;
   }
+
+  const maxSynopsisLength = 150;
+  const isLongSynopsis = detail.synopsis.length > maxSynopsisLength;
+  const synopsisToShow = isLongSynopsis ? `${detail.synopsis.slice(0, maxSynopsisLength)}...` : detail.synopsis;
+
+  const handleReadMoreClick = () => {
+    router.push(`/movieReview/${detail.review_id}`);
+  };
 
   return (
     <Box sx={{ color: '#fff', padding: '10px', borderRadius: '4px', maxWidth: '400px' }}>
@@ -21,7 +32,19 @@ const MovieTooltipContent = ({ detail }) => {
       <Rating name="rating" value={detail.score} readOnly />
       <Typography variant="body2">นักแสดงนำ: {detail.actor}</Typography>
       <Typography variant="body2">ประเภท: {detail.genre_id.genre}</Typography>
-      <Typography variant="body2">{detail.synopsis}</Typography>
+      <Typography variant="body2">
+        {synopsisToShow}
+        {isLongSynopsis && (
+          <Typography
+            variant="body2"
+            component="span"
+            sx={{ color: '#909090', cursor: 'pointer' }}
+            onClick={handleReadMoreClick}
+          >
+            Read More
+          </Typography>
+        )}
+      </Typography>
   </Box>
   );
 };
@@ -192,9 +215,9 @@ export default function HomePage() {
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 400,
-                      height: 300,
-                      marginInline: 1,
+                      width: 450,
+                      height: 280,
+                      marginInline: '10px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
@@ -203,7 +226,7 @@ export default function HomePage() {
                     onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
                   >
                     <img src={`${item.image}`} 
-                         style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                         style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                     />
                   </Box>
                 </Tooltip>
@@ -212,8 +235,7 @@ export default function HomePage() {
             <Typography
               variant="h6"
               sx={{
-                ml: 5,
-                marginTop: 4,
+                margin: '40px 0px 30px 40px',
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
@@ -249,9 +271,9 @@ export default function HomePage() {
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 200,
+                      width: 250,
                       height: 150,
-                      marginInline: '8px',
+                      marginInline: '10px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
@@ -261,7 +283,7 @@ export default function HomePage() {
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </Box>
                 </Tooltip>
@@ -270,12 +292,12 @@ export default function HomePage() {
             <Typography
               variant="h6" 
                 sx={{
-                    ml: 5,
-                    marginTop:4,
-                    fontWeight: 700,
-                    letterSpacing: ".1rem",
-                    textDecoration: "none",
-                  }}>
+                  margin: '40px 0px 30px 40px',
+                  fontWeight: 700,
+                  letterSpacing: '.1rem',
+                  textDecoration: 'none',
+                  color: '#ffffff',
+                }}>
                 Made in England 
             </Typography>
             <Carousel
@@ -305,9 +327,9 @@ export default function HomePage() {
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 200,
+                      width: 250,
                       height: 150,
-                      marginInline: '8px',
+                      marginInline: '10px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
@@ -317,7 +339,7 @@ export default function HomePage() {
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </Box>
                 </Tooltip>
@@ -326,12 +348,12 @@ export default function HomePage() {
             <Typography
               variant="h6" 
                 sx={{
-                    ml: 5,
-                    marginTop:4,
-                    fontWeight: 700,
-                    letterSpacing: ".1rem",
-                    textDecoration: "none",
-                  }}>
+                  margin: '40px 0px 30px 40px',
+                  fontWeight: 700,
+                  letterSpacing: '.1rem',
+                  textDecoration: 'none',
+                  color: '#ffffff',
+                }}>
                 Made in Japan 
             </Typography>
             <Carousel
@@ -361,9 +383,9 @@ export default function HomePage() {
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 200,
+                      width: 250,
                       height: 150,
-                      marginInline: '8px',
+                      marginInline: '10px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
@@ -373,7 +395,7 @@ export default function HomePage() {
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </Box>
                 </Tooltip>
@@ -382,12 +404,12 @@ export default function HomePage() {
             <Typography
               variant="h6" 
                 sx={{
-                    ml: 5,
-                    marginTop:4,
-                    fontWeight: 700,
-                    letterSpacing: ".1rem",
-                    textDecoration: "none",
-                  }}>
+                  margin: '40px 0px 30px 40px',
+                  fontWeight: 700,
+                  letterSpacing: '.1rem',
+                  textDecoration: 'none',
+                  color: '#ffffff',
+                }}>
                 Made in Korea 
             </Typography>
             <Carousel
@@ -417,9 +439,9 @@ export default function HomePage() {
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 200,
+                      width: 250,
                       height: 150,
-                      marginInline: '8px',
+                      marginInline: '10px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
@@ -429,7 +451,7 @@ export default function HomePage() {
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </Box>
                 </Tooltip>
@@ -438,12 +460,12 @@ export default function HomePage() {
             <Typography
               variant="h6" 
                 sx={{
-                    ml: 5,
-                    marginTop:4,
-                    fontWeight: 700,
-                    letterSpacing: ".1rem",
-                    textDecoration: "none",
-                  }}>
+                  margin: '40px 0px 30px 40px',
+                  fontWeight: 700,
+                  letterSpacing: '.1rem',
+                  textDecoration: 'none',
+                  color: '#ffffff',
+                }}>
                 Made in Thai 
             </Typography>
             <Carousel
@@ -473,9 +495,9 @@ export default function HomePage() {
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 200,
+                      width: 250,
                       height: 150,
-                      marginInline: '8px',
+                      marginInline: '10px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
@@ -485,7 +507,7 @@ export default function HomePage() {
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </Box>
                 </Tooltip>
