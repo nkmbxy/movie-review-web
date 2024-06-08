@@ -5,9 +5,20 @@ import { axiosInstance } from '@/lib/axiosInstance';
 import { useRouter } from "next/navigation";
 
 const MovieTooltipContent = ({ detail }) => {
+
+  const router = useRouter();
+
   if (!detail) {
     return null;
   }
+
+  const maxSynopsisLength = 150;
+  const isLongSynopsis = detail.synopsis.length > maxSynopsisLength;
+  const synopsisToShow = isLongSynopsis ? `${detail.synopsis.slice(0, maxSynopsisLength)}...` : detail.synopsis;
+
+  const handleReadMoreClick = () => {
+    router.push(`/movieReview/${detail.review_id}`);
+  };
 
   return (
     <Box sx={{ color: '#fff', padding: '10px', borderRadius: '4px', maxWidth: '400px' }}>
@@ -17,8 +28,20 @@ const MovieTooltipContent = ({ detail }) => {
       <Rating name="rating" value={detail.score} readOnly />
       <Typography variant="body2">นักแสดงนำ: {detail.actor}</Typography>
       <Typography variant="body2">ประเภท: {detail.genre_id.genre}</Typography>
-      <Typography variant="body2">{detail.synopsis}</Typography>
-    </Box>
+      <Typography variant="body2">
+        {synopsisToShow}
+        {isLongSynopsis && (
+          <Typography
+            variant="body2"
+            component="span"
+            sx={{ color: '#909090', cursor: 'pointer' }}
+            onClick={handleReadMoreClick}
+          >
+            Read More
+          </Typography>
+        )}
+      </Typography>
+  </Box>
   );
 };
 
