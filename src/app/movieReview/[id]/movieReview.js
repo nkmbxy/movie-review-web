@@ -54,7 +54,7 @@ export default function movieReviewPage() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [showSpoil, setShowSpoil] = useState(false);
-  const [ReviewByIDAPI, setReviewByIDAPI] = useState(null);
+  const [ReviewByIdAPI, setReviewByIdAPI] = useState(null);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openAlertDialogError, setOpenAlertDialogError] = useState(false);
   const [messageDialogError, setMessageDialogError] = useState('');
@@ -65,22 +65,23 @@ export default function movieReviewPage() {
 
   const handleCheckFavorite = async () => {
     try {
-      const response = await axiosInstance.get(`/favorite/favColor/${ReviewByIDAPI.movie_Id._id}`);
+      const response = await axiosInstance.get(`/favorite/favColor/${ReviewByIdAPI?.movie_id?._id}`);
       setCheckFavorite(response.data.status);
     } catch (error) {
       console.log('Error checking favorite:', error);
     }
   };
+ 
 
   const handleFavorite = async () => {
     try {
       if (checkFavorite === false) {
-        const response = await axiosInstance.post(`/favorite/add/${ReviewByIDAPI.movie_Id._id}`);
+        const response = await axiosInstance.post(`/favorite/add/${ReviewByIdAPI?.movie_id?._id}`);
         if (response.status === 200) {
           setCheckFavorite(true);
         }
       } else {
-        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIDAPI.movie_Id._id}`);
+        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIdAPI?.movie_id?._id}`);
         if (response.status === 200) {
           setCheckFavorite(false);
         }
@@ -100,7 +101,7 @@ export default function movieReviewPage() {
           setMessageDialogError('Failed to create comment');
           setTitleDialogError('Error');
         }
-        setReviewByIDAPI(prev => ({
+        setReviewByIdAPI(prev => ({
           ...prev,
           comments: [{ comment_text: commentText, like_counter: 0 }, ...prev.comments],
         }));
@@ -146,7 +147,7 @@ export default function movieReviewPage() {
       const movie_Id = params?.id;
       const res = await getReviewByIdAPI(movie_Id);
       const chunkMovies = chunkMoviesGenre(res.moviesGenre, 3);
-      setReviewByIDAPI(res.review);
+      setReviewByIdAPI(res.review);
       setMoviesGenre(chunkMovies);
     } catch (error) {
       console.log(error);
@@ -160,7 +161,7 @@ export default function movieReviewPage() {
   useEffect(() => {
     handleGetReviewByIdAPI();
     handleCheckFavorite();
-  }, [handleGetReviewByIdAPI, handleCheckFavorite]);
+  }, [handleGetReviewByIdAPI,handleCheckFavorite]);
 
   const handleSubmit = useCallback(async e => {
     try {
@@ -196,7 +197,7 @@ export default function movieReviewPage() {
             flexDirection: 'column',
           }}
         >
-          <img src={ReviewByIDAPI?.movie_id?.image || ''} alt="Movie Image" style={{ width: 710, height: 400 }} />
+          <img src={ReviewByIdAPI?.movie_id?.image || ''} alt="Movie Image" style={{ width: 710, height: 400 }} />
         </Grid>
 
         <Grid container style={{ display: 'flex', flexDirection: 'row' }}>
@@ -219,17 +220,17 @@ export default function movieReviewPage() {
                     marginTop: '20px',
                   }}
                 >
-                  {ReviewByIDAPI?.movie_id?.title || ''}
+                  {ReviewByIdAPI?.movie_id?.title || ''}
                 </Typography>
 
                 <Typography component="legend" sx={{ color: '#ffffff', marginTop: '10px', fontWeight: 'bold' }}>
                   Score
                 </Typography>
 
-                <Rating name="simple-controlled" value={ReviewByIDAPI?.score || ''} readOnly />
+                <Rating name="simple-controlled" value={ReviewByIdAPI?.score || ''} readOnly />
 
                 <Typography variant="body1" sx={{ color: '#ffffff', marginTop: '10px', fontWeight: 'bold' }}>
-                  ประเภท : {ReviewByIDAPI?.movie_id?.genre_id?.genre || ''}
+                  ประเภท : {ReviewByIdAPI?.movie_id?.genre_id?.genre || ''}
                 </Typography>
 
                 <Typography variant="body1" sx={{ color: '#ffffff', marginTop: '10px', fontWeight: 'bold' }}>
@@ -243,7 +244,7 @@ export default function movieReviewPage() {
                     marginBottom: '20px',
                   }}
                 >
-                  {ReviewByIDAPI?.movie_id?.synopsis || ''}
+                  {ReviewByIdAPI?.movie_id?.synopsis || ''}
                 </Typography>
               </Grid>
 
@@ -276,7 +277,7 @@ export default function movieReviewPage() {
                     }}
                   >
                     <Box className={classes.boxComment}>
-                      {ReviewByIDAPI?.comments?.map((comment, index) => (
+                      {ReviewByIdAPI?.comments?.map((comment, index) => (
                         <Box
                           key={index}
                           sx={{
@@ -392,7 +393,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  นามปากกา : {ReviewByIDAPI?.pseudonym || ''}
+                  นามปากกา : {ReviewByIdAPI?.pseudonym || ''}
                 </Typography>
                 <IconButton onClick={handleFavorite}>
                   {checkFavorite ? (
@@ -411,7 +412,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  นักแสดงนำ : {ReviewByIDAPI?.actor || ''}
+                  นักแสดงนำ : {ReviewByIdAPI?.actor || ''}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -423,7 +424,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ผู้กำกับ : {ReviewByIDAPI?.director || ''}
+                  ผู้กำกับ : {ReviewByIdAPI?.director || ''}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -435,7 +436,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ความฟิน : {ReviewByIDAPI?.happy || ''}/10
+                  ความฟิน : {ReviewByIdAPI?.happy || ''}/10
                 </Typography>
                 <Typography
                   variant="body1"
@@ -447,7 +448,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ความเศร้า : {ReviewByIDAPI?.drama || ''}/10
+                  ความเศร้า : {ReviewByIdAPI?.drama || ''}/10
                 </Typography>
                 <Typography
                   variant="body1"
@@ -459,7 +460,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ความตลก : {ReviewByIDAPI?.joke || ''}/10
+                  ความตลก : {ReviewByIdAPI?.joke || ''}/10
                 </Typography>
 
                 <Grid item sx={{ marginLeft: '40px' }}>
@@ -509,7 +510,7 @@ export default function movieReviewPage() {
                       </DialogTitle>
                       <DialogContent>
                         {showSpoil ? (
-                          <Typography>{ReviewByIDAPI?.spoil_text || ''}</Typography>
+                          <Typography>{ReviewByIdAPI?.spoil_text || ''}</Typography>
                         ) : (
                           <Typography>สปอยยังไม่ถูกเปิดเผย</Typography>
                         )}

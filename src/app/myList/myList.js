@@ -47,18 +47,24 @@ export default function MyList() {
 
           <Grid container sx={{ width: '100%', padding: 2 }}>
             <Grid
-              item
+              container
               sx={{
                 display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-                overflowX: 'auto',
+                flexWrap: 'wrap',
+                justifyContent: 'start',
               }}
             >
-              {listFavorites.map(item => (
-                <Grid key={item.img} sx={{ margin: 1, width: 250, height: 150 }}>
+              {listFavorites.map((item, index) => (
+                <Grid key={index} sx={{ margin: 1 }}>
                   {item.movie_id && item.movie_id.image && (
-                    <img src={`${item.movie_id.image}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img
+                      src={`${item.movie_id.image}`}
+                      style={{
+                        width: '280px',
+                        height: '180px',
+                        objectFit: 'cover',
+                      }}
+                    />
                   )}
                 </Grid>
               ))}
