@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,22 +12,39 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useSetRecoilState, authState } from '../../store';
-import Divider from '@mui/material/Divider';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 const menuNav = [
   { name: 'Home', path: '/' },
-  { name: 'Movie', path: '/movie' },
+  { name: 'Movie', path: '/genre' },
   { name: 'My List', path: '/myList' },
   { name: 'Review', path: '/createReview' },
 ];
 
-function ResponsiveAppBar({ token }) {
-  const router = useRouter();
+function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElMovie, setAnchorElMovie] = useState(null);
-  const setAuth = useSetRecoilState(authState);
+  const [user, setUser] = useState(undefined);
+  const [isLogin, setIsLogin] = useState(false);
+
+  const fetchUserdata = async () => {
+    try {
+      const response = await axiosInstance.get('/user/userByUserID');
+      const { data, status } = response;
+      if (status === 200 && data?.message !== 'Unauthorized') {
+        setUser(data);
+      } else {
+        setIsLogin(false);
+        setUser(undefined);
+      }
+    } catch (error) {
+      console.log(error.response?.status);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserdata();
+  }, []);
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
@@ -43,6 +60,20 @@ function ResponsiveAppBar({ token }) {
 
   const handleCloseMovieMenu = () => {
     setAnchorElMovie(null);
+  };
+
+  useEffect(() => {
+    setIsLogin(user !== undefined);
+  }, [user]);
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post('/user/logout');
+      setIsLogin(false);
+      setUser(undefined);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -152,42 +183,42 @@ function ResponsiveAppBar({ token }) {
                       onClose={handleCloseMovieMenu}
                     >
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/action" passHref>
+                        <Link href="/genre/action" passHref>
                           <Typography textAlign="center">Action</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/comedy" passHref>
+                        <Link href="/genre/comedy" passHref>
                           <Typography textAlign="center">Comedy</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/drama" passHref>
+                        <Link href="/genre/drama" passHref>
                           <Typography textAlign="center">Drama</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/fantasy" passHref>
-                          <Typography textAlign="center">Fantasy</Typography>
+                        <Link href="/genre/fantacy" passHref>
+                          <Typography textAlign="center">Fantacy</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/investigation" passHref>
+                        <Link href="/genre/investigation" passHref>
                           <Typography textAlign="center">Investigation</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/romance" passHref>
+                        <Link href="/genre/romance" passHref>
                           <Typography textAlign="center">Romance</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/sci-fi" passHref>
+                        <Link href="/genre/sci-fi" passHref>
                           <Typography textAlign="center">Sci-fi</Typography>
                         </Link>
                       </MenuItem>
                       <MenuItem onClick={handleCloseMovieMenu}>
-                        <Link href="/movie/thriller" passHref>
+                        <Link href="/genre/thriller" passHref>
                           <Typography textAlign="center">Thriller</Typography>
                         </Link>
                       </MenuItem>
@@ -207,17 +238,13 @@ function ResponsiveAppBar({ token }) {
             ))}
           </Box>
 
-          {token ? (
+          {isLogin != false ? (
             <Button
               sx={{
                 padding: 1,
                 color: '#FFFFFF',
               }}
-              onClick={() => {
-                localStorage.removeItem('x-auth-token');
-                setAuth('');
-                router.push('/login');
-              }}
+              onClick={handleLogout}
             >
               <Typography
                 sx={{
