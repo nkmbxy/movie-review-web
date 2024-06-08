@@ -105,13 +105,14 @@ export default function createReview() {
     e.preventDefault();
     try {
       const res = await axiosInstance.post('/review/createReview', formData);
-      if (res?.status !== 200) {
+      if (res?.status === 200) {
+        setOpenToast(true);
+        setTimeout(() => {
+          router.push(`/movieReview/${res.data.data}`);
+        }, 2000);
+      } else {
         setOpenAlertDialogError(true);
       }
-      setOpenToast(true);
-      setTimeout(() => {
-        router.push(`/movieReview/${res.data.reviewId}`);
-      }, 2000);
     } catch (error) {
       setOpenAlertDialogError(true);
     }
@@ -124,7 +125,8 @@ export default function createReview() {
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            width: '75%',
+            width: '65%',
+            minHeight: '70vh',
             borderRadius: '10px',
             background: '#FFFFFF',
             marginTop: '20px',
@@ -142,58 +144,38 @@ export default function createReview() {
                 color: '#606060',
               }}
             >
-              เรื่องที่คุณต้องการรีวิว
+              What movie do you want to review?
             </Typography>
             <TextField
               id="title"
               name="title"
-              label="ชื่อเรื่อง"
+              label="Title"
               variant="standard"
               value={reviewData.title}
               onChange={handleInputChange}
               sx={{
                 marginLeft: '2rem',
                 width: '90%',
-                marginBottom: '2rem',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
+                marginBottom: '1rem',
               }}
             />
             <TextField
               id="writer"
               name="writer"
-              label="นามปากกา"
+              label="Writer"
               variant="standard"
               value={reviewData.writer}
               onChange={handleInputChange}
               sx={{
                 marginLeft: '2rem',
                 width: '90%',
-                marginBottom: '2rem',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
+                marginBottom: '1rem',
               }}
             />
             <TextField
               id="plot"
               name="plot"
-              label="เรื่องย่อ"
+              label="Plot"
               multiline
               rows={4}
               variant="standard"
@@ -202,23 +184,13 @@ export default function createReview() {
               sx={{
                 marginLeft: '2rem',
                 width: '90%',
-                marginBottom: '2rem',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
+                marginBottom: '1rem',
               }}
             />
             <TextField
               id="spoiler"
               name="spoiler"
-              label="สปอย"
+              label="Spoiler"
               multiline
               rows={4}
               variant="standard"
@@ -227,74 +199,44 @@ export default function createReview() {
               sx={{
                 marginLeft: '2rem',
                 width: '90%',
-                marginBottom: '2rem',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
+                marginBottom: '1rem',
               }}
             />
             <TextField
               id="leadActor"
               name="leadActor"
-              label="นักแสดงนำ"
+              label="Leading Role"
               variant="standard"
               value={reviewData.leadActor}
               onChange={handleInputChange}
               sx={{
                 marginLeft: '2rem',
                 width: '90%',
-                marginBottom: '2rem',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
+                marginBottom: '1rem',
               }}
             />
             <TextField
               id="director"
               name="director"
-              label="ผู้กำกับ"
+              label="Director"
               variant="standard"
               value={reviewData.director}
               onChange={handleInputChange}
               sx={{
                 marginLeft: '2rem',
                 width: '90%',
-                marginBottom: '2rem',
-              }}
-              InputProps={{
-                style: {
-                  fontSize: '16px',
-                },
-              }}
-              InputLabelProps={{
-                style: {
-                  fontSize: '18px',
-                },
+                marginBottom: '1rem',
               }}
             />
           </Box>
-          <Box sx={{ width: '40%', margin: '2rem' }}>
+          <Box sx={{ width: '40%', margin: '1rem' }}>
             <Box
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 border: '1px solid #CCCCCC',
-                width: '90%',
+                width: '80%',
                 height: '180px',
                 marginBottom: '.5rem',
               }}
@@ -316,9 +258,16 @@ export default function createReview() {
               tabIndex={-1}
               startIcon={<CloudUploadIcon />}
               sx={{
-                width: '90%',
+                width: '310px',
+                height: '23.5px',
                 textWrap: 'nowrap',
                 backgroundColor: '#848484',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                '&:hover': {
+                  backgroundColor: '#404040',
+                },
               }}
             >
               Upload image
@@ -330,7 +279,7 @@ export default function createReview() {
                 paddingTop: '10px',
               }}
             >
-              ความสนุก :
+              Fun :
             </InputLabel>
             <Select
               id="funRates"
@@ -353,7 +302,7 @@ export default function createReview() {
                 paddingTop: '10px',
               }}
             >
-              ความฟิน :
+              Satisfaction :
             </InputLabel>
             <Select
               id="finRates"
@@ -376,7 +325,7 @@ export default function createReview() {
                 paddingTop: '10px',
               }}
             >
-              ความเศร้า :
+              Sadness :
             </InputLabel>
             <Select
               id="sadRates"
@@ -399,7 +348,7 @@ export default function createReview() {
                 paddingTop: '10px',
               }}
             >
-              ความตลก :
+              Funny :
             </InputLabel>
             <Select
               id="funnyRates"
@@ -421,10 +370,9 @@ export default function createReview() {
                 color: '#606060',
                 margin: '15px 0px 5px 0px',
                 maxWidth: '300px',
-                fontSize: '18px',
               }}
             >
-              ประเภท
+              Genre
             </Typography>
 
             <Box>
@@ -460,7 +408,7 @@ export default function createReview() {
                 maxWidth: '300px',
               }}
             >
-              ประเทศ
+              Country
             </Typography>
             <Box>
               {countriesItems.map((countriesItems, index) => (

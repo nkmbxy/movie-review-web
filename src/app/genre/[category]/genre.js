@@ -50,19 +50,25 @@ export default function GenrePage() {
           </Typography>
         </Grid>
 
-        <Grid container sx={{ width: '100%', padding: 2 }}>
+        <Grid container sx={{ width: '100%', padding: 2}}>
           <Grid
-            item
+            container
             sx={{
               display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'nowrap',
-              overflowX: 'auto',
+              flexWrap: 'wrap',
+              justifyContent: 'start',
             }}
           >
-            {moviesSortByGenre.map(item => (
-              <Grid key={item.img} sx={{ margin: 1, minWidth: 150, height: 150 }}>
-                <img src={`${item.image}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            {moviesSortByGenre.map((item, index) => (
+              <Grid key={index} item sx={{ margin: 1, }}>
+                <img
+                  src={`${item.image}`}
+                  style={{
+                    width: '280px',
+                    height: '180px',
+                    objectFit: 'cover',
+                  }}
+                />
               </Grid>
             ))}
           </Grid>
