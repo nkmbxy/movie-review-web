@@ -1,80 +1,10 @@
 'use client';
-import { Grid, TextField, Button, Box, Typography, Tooltip, Rating } from '@mui/material';
+import { Grid, TextField, Button, Box, Typography, Tooltip, Rating } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { axiosInstance } from '@/lib/axiosInstance';
 
-const threeTopMovie = [
-  //mock data
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-  {
-    img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
-  },
-  {
-    img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
-  },
-];
-
-const moviesList = [
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-  {
-    img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
-  },
-  {
-    img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
-  },
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-  {
-    img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
-  },
-  {
-    img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
-  },
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-  },
-];
-
-const movieDetails = [
-  {
-    img: 'https://freakingeek.com/wp-content/uploads/2023/04/Queenmaker-Banniere.jpg',
-    title: 'Queenmaker',
-    rating: '5',
-    cast: 'Kim Heeae / Moon So-ri',
-    genre: 'Drama',
-    plot: 'ซีรีส์ที่จะเล่าเรื่องราวของผู้หญิง 2 คนที่ใช้ชีวิตแตกต่างกันอย่างสิ้นเชิง จับมือกันและละทิ้งทุกวิถีทางที่เคยมีมาทั้งหมด เพื่อสร้างโลกที่คงไว้ซึ่งความยุติธรรมและความจริง',
-  },
-  {
-    img: 'https://puui.wetvinfo.com/vcover_hz_pic/0/gnwjazjgmg997xg1607677060480/0',
-    title: 'The Untamed',
-    rating: '4',
-    cast: 'Xiao Zhan / Wang Yibo',
-    genre: 'Fantasy',
-    plot: 'เว่ยอู๋เซี่ยน(เซียวจ้าน)หนุ่มน้อยศิษย์ตระกูลเจียงผู้มีจิตใจเมตตาที่ภายหลังฝึกวิชามารและได้รับการขนานนามว่า ปรมาจารย์อี๋หลิง ได้ทำการล้มล้างตระกูลเวินจะได้รับความสำเร็จ แต่เพราะวิชาอันแกร่งกล้าของเขาต่างทำให้ผู้คนมากมายหวาดกลัว ยอดฝีมือจากทั่วทุกหนแห่งต่างพยายามทำลายล้างเว่ยอู๋เซี่ยน จนในที่สุดเขาหายสาบสูญไปอย่างไร้ร่องรอย...16 ปีต่อมา เว่ยอู๋เซี่ยนปรากฏตัวขึ้นอีกครั้งในคราบชายสวมหน้ากากนามโม่เสวียนอวี่(เซียวจ้าน) ทุกคนต่างจำเขาไม่ได้ เขาได้กลับมาพบกับคู่หูหลานวั่งจี(หวังอี้ป๋อ)จากตระกูลหลานแห่งกูซู เจียงเฉิง(วังจั๋วเฉิง)ศิษย์ผู้น้องจากตระกูลเจียงแห่งอวิ๋นเมิ่ง รวมถึงบุคคลอื่นในอดีต การกลับมาของเว่ยอู่เซี่ยนในครั้งนี้จะมาเพื่อคลี่คลายปมปริศนาในอดีตและความจริงที่ทุกคนต่างคาดไม่ถึง',
-  },
-  {
-    img: 'https://image.tmdb.org/t/p/original/jOpb4ZMF9WyE1YPJfMfhonKGJzH.jpg',
-    title: 'Tomorrow I Will Date With Yesterday’s You',
-    rating: '4',
-    cast: 'Sota Fukushi / Nana Komatsu',
-    genre: 'Romance',
-    plot: 'ทาคาโตชิ นักศึกษามหาวิทยาลัย ตกหลุมรักสาวสวยลึกลับบนรถไฟ เขาตามจีบเธอ จนรู้ว่าเธอชื่อ เอมิ พวกเขาตกลงจะเดทกัน 30 วัน และ ในวันสุดท้าย เมื่อ ทาคาโตชิ สารภาพรัก กับ เธอ เขาถึงรู้ว่า ความรักของพวกเขาไม่มีวันเป็นไปได้ เพราะ โลกของพวกเขาคือโลกคู่ขนานที่ทุก ๆ 5 ปี เวลาจะมาบรรจบกัน',
-  },
-];
 
 const MovieTooltipContent = ({ detail }) => {
   if (!detail) {
@@ -86,16 +16,74 @@ const MovieTooltipContent = ({ detail }) => {
       <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
         {detail.title}
       </Typography>
-      <Rating name="rating" value={detail.rating} readOnly />
-      <Typography variant="body2">นักแสดงนำ: {detail.cast}</Typography>
-      <Typography variant="body2">ประเภท: {detail.genre}</Typography>
-      <Typography variant="body2">{detail.plot}</Typography>
-    </Box>
+      <Rating name="rating" value={detail.score} readOnly />
+      <Typography variant="body2">นักแสดงนำ: {detail.actor}</Typography>
+      <Typography variant="body2">ประเภท: {detail.genre_id.genre}</Typography>
+      <Typography variant="body2">{detail.synopsis}</Typography>
+  </Box>
   );
 };
 
 export default function HomePage() {
-  const getMovieDetailByImg = img => movieDetails.find(detail => detail.img === img) || null;
+  
+  const [searchMovies, setSearchMovies] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [randomMovies, setRandomMovies] = useState([]);
+  const [chineseMovies, setChineseMovies] = useState([]);
+  const [englishMovies, setEnglishMovies] = useState([]);
+  const [japaneseMovies, setJapaneseMovies] = useState([]);
+  const [koreanMovies, setKoreanMovies] = useState([]);
+  const [thaiMovies, setThaiMovies] = useState([]);
+
+  const getRandomMovies = async () => {
+    const response = await axiosInstance.get('/movie/random')
+    setRandomMovies(response.data.data);
+  }
+  const getChineseMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Chinese')
+    setChineseMovies(respond.data)
+  }
+  const getEnglishMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=English')
+    setEnglishMovies(respond.data)
+  }
+  const getJapaneseMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Japanese')
+    setJapaneseMovies(respond.data)
+  }
+  const getKoreanMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Korean')
+    setKoreanMovies(respond.data)
+  }
+  const getThaiMovies = async () => {
+    const respond = await axiosInstance.get('/movie/country?country=Thai')
+    setThaiMovies(respond.data)
+  }
+
+  useEffect(() => {
+    getRandomMovies();
+    getChineseMovies();
+    getEnglishMovies();
+    getJapaneseMovies();
+    getKoreanMovies();
+    getThaiMovies();
+  }, [])
+
+  const handleSearchMovies = async () => {
+    const respond = await axiosInstance.get(`/movie/search?title=${searchMovies}`)
+    console.log(respond.data)
+    setSearchResult(respond.data)
+  }
+
+  console.log(searchMovies);
+  // console.log(randomMovies);
+  // console.log(chineseMovies);
+  // console.log(englishMovies);
+  // console.log(japaneseMovies);
+  // console.log(koreanMovies);
+  // console.log(thaiMovies);
+  
+
   return (
     <Grid container style={{ backgroundColor: '#000000', minHeight: '91.5vh' }}>
       <Grid item sx={{ mb: 8, width: '100%' }}>
@@ -112,6 +100,10 @@ export default function HomePage() {
           <TextField
             placeholder="Search for topics of interest"
             variant="outlined"
+            value={searchMovies}
+            onChange={
+              (e) => setSearchMovies(e.target.value)
+            }
             sx={{
               backgroundColor: '#ffffff',
               display: 'flex',
@@ -135,14 +127,15 @@ export default function HomePage() {
                   backgroundColor: '#e0d4b3',
                 },
               }}
+              onClick={handleSearchMovies}
             >
               find
             </Button>
           </Grid>
         </Grid>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {threeTopMovie.map(item => (
-            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+          {randomMovies.map((item) => (
+            <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
               <Box
                 sx={{
                   width: 400,
@@ -154,7 +147,7 @@ export default function HomePage() {
                   },
                 }}
               >
-                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img src={`${item.image}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </Box>
             </Tooltip>
           ))}
@@ -188,15 +181,15 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
-          {moviesList.map(item => (
-            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+          {chineseMovies.map((item) => (
+            <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
               <Box
                 sx={{
                   width: 200,
@@ -208,22 +201,24 @@ export default function HomePage() {
                   },
                 }}
               >
-                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={item.image}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
         </Carousel>
         <Typography
-          variant="h6"
-          sx={{
-            ml: 5,
-            marginTop: 4,
-            fontWeight: 700,
-            letterSpacing: '.1rem',
-            textDecoration: 'none',
-          }}
-        >
-          Made in England
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop:4,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in England 
         </Typography>
         <Carousel
           infiniteLoop={false}
@@ -241,15 +236,15 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
-          {moviesList.map(item => (
-            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+          {englishMovies.map((item) => (
+            <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
               <Box
                 sx={{
                   width: 200,
@@ -261,22 +256,24 @@ export default function HomePage() {
                   },
                 }}
               >
-                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={item.image}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
         </Carousel>
         <Typography
-          variant="h6"
-          sx={{
-            ml: 5,
-            marginTop: 4,
-            fontWeight: 700,
-            letterSpacing: '.1rem',
-            textDecoration: 'none',
-          }}
-        >
-          Made in Japanese
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop:4,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Japan 
         </Typography>
         <Carousel
           infiniteLoop={false}
@@ -294,15 +291,15 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
-          {moviesList.map(item => (
-            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+          {japaneseMovies.map((item) => (
+            <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
               <Box
                 sx={{
                   width: 200,
@@ -314,22 +311,24 @@ export default function HomePage() {
                   },
                 }}
               >
-                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={item.image}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
         </Carousel>
         <Typography
-          variant="h6"
-          sx={{
-            ml: 5,
-            marginTop: 4,
-            fontWeight: 700,
-            letterSpacing: '.1rem',
-            textDecoration: 'none',
-          }}
-        >
-          Made in Korean
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop:4,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Korea 
         </Typography>
         <Carousel
           infiniteLoop={false}
@@ -347,15 +346,15 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
-          {moviesList.map(item => (
-            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+          {koreanMovies.map((item) => (
+            <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
               <Box
                 sx={{
                   width: 200,
@@ -367,22 +366,24 @@ export default function HomePage() {
                   },
                 }}
               >
-                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={item.image}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
         </Carousel>
         <Typography
-          variant="h6"
-          sx={{
-            ml: 5,
-            marginTop: 4,
-            fontWeight: 700,
-            letterSpacing: '.1rem',
-            textDecoration: 'none',
-          }}
-        >
-          Made in Thai
+          variant="h6" 
+            sx={{
+                ml: 5,
+                marginTop:4,
+                fontWeight: 700,
+                letterSpacing: ".1rem",
+                textDecoration: "none",
+              }}>
+            Made in Thai 
         </Typography>
         <Carousel
           infiniteLoop={false}
@@ -400,15 +401,15 @@ export default function HomePage() {
             alignItems: 'center',
             width: '100%',
             '& .control-dots': {
-              bottom: '-40px', // Adjust the position of the dot control
+              bottom: '-40px',
             },
             '& .dot': {
-              margin: '0 5px', // Adjust the spacing between dots
+              margin: '0 5px',
             },
           }}
         >
-          {moviesList.map(item => (
-            <Tooltip key={item.img} title={<MovieTooltipContent detail={getMovieDetailByImg(item.img)} />} arrow>
+          {thaiMovies.map((item) => (
+            <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
               <Box
                 sx={{
                   width: 200,
@@ -420,7 +421,10 @@ export default function HomePage() {
                   },
                 }}
               >
-                <img src={`${item.img}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={item.image}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
               </Box>
             </Tooltip>
           ))}
