@@ -22,7 +22,6 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import { getReviewByIdAPI, createCommentAPI } from '../../../api/review';
 import { useParams } from 'next/navigation';
 import AlertDialogConfirm from '../../../components/alertDialog/alertConfirm';
 import AlertDialogError from '../../../components/alertDialog/alertError';
@@ -80,6 +79,14 @@ export default function movieReviewPage() {
       console.error('Error fetching review by ID:', error);
     }
   };
+
+  const keepGenre = ReviewByIdAPI?.movie_id?.genre_id?.genre
+  const getMoviesGenre = async () => {
+    const respond = await axiosInstance.get(`/genre/movieSortByGenre?genre=${keepGenre}`)
+    setMoviesGenre(respond?.data?.data?.movie_id)
+  }
+
+  // console.log(ReviewByIdAPI?.movie_id?.genre_id?.genre);
 
   const handleCheckFavorite = async () => {
     try {
@@ -181,9 +188,10 @@ export default function movieReviewPage() {
   };
 
   useEffect(() => {
+    getMoviesGenre();
     handleGetReviewByIdAPI();
     handleCheckFavorite();
-  }, [handleGetReviewByIdAPI, handleCheckFavorite]);
+  }, [getMoviesGenre, handleGetReviewByIdAPI, handleCheckFavorite]);
 
   const handleSubmit = async e => {
     try {
@@ -252,11 +260,11 @@ export default function movieReviewPage() {
                 <Rating name="simple-controlled" value={ReviewByIdAPI?.score || ''} readOnly />
 
                 <Typography variant="body1" sx={{ color: '#ffffff', marginTop: '10px', fontWeight: 'bold' }}>
-                  ประเภท : {ReviewByIdAPI?.movie_id?.genre_id?.genre || ''}
+                  Genre : {ReviewByIdAPI?.movie_id?.genre_id?.genre || ''}
                 </Typography>
 
                 <Typography variant="body1" sx={{ color: '#ffffff', marginTop: '10px', fontWeight: 'bold' }}>
-                  เรื่องย่อ
+                  Plot
                 </Typography>
 
                 <Typography
@@ -345,7 +353,7 @@ export default function movieReviewPage() {
                       >
                         <Avatar sx={{ margin: '15px', width: 30, height: 30 }} />
                         <TextField
-                          placeholder="แสดงความคิดเห็นของคุณ"
+                          placeholder="Write a comment.."
                           className="w-full"
                           variant="standard"
                           type="text"
@@ -388,7 +396,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ดูรีวิวที่คล้ายกัน
+                  Similar Reviews
                 </Typography>
               </Grid>
             </Grid>
@@ -415,7 +423,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  นามปากกา : {ReviewByIdAPI?.pseudonym || ''}
+                  Writer : {ReviewByIdAPI?.pseudonym || ''}
                 </Typography>
                 <IconButton onClick={handleFavorite}>
                   {checkFavorite ? (
@@ -434,7 +442,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  นักแสดงนำ : {ReviewByIdAPI?.actor || ''}
+                  Leading Role : {ReviewByIdAPI?.actor || ''}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -446,7 +454,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ผู้กำกับ : {ReviewByIdAPI?.director || ''}
+                  Director : {ReviewByIdAPI?.director || ''}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -458,7 +466,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ความฟิน : {ReviewByIdAPI?.happy || ''}/10
+                  Satisfaction : {ReviewByIdAPI?.happy || ''}/10
                 </Typography>
                 <Typography
                   variant="body1"
@@ -470,7 +478,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ความเศร้า : {ReviewByIdAPI?.drama || ''}/10
+                  Sadness : {ReviewByIdAPI?.drama || ''}/10
                 </Typography>
                 <Typography
                   variant="body1"
@@ -482,7 +490,7 @@ export default function movieReviewPage() {
                     fontWeight: 'bold',
                   }}
                 >
-                  ความตลก : {ReviewByIdAPI?.joke || ''}/10
+                  Funny : {ReviewByIdAPI?.joke || ''}/10
                 </Typography>
 
                 <Grid item sx={{ marginLeft: '40px' }}>
@@ -528,13 +536,13 @@ export default function movieReviewPage() {
                           fontWeight: 'bold',
                         }}
                       >
-                        สปอย
+                        Spoiler
                       </DialogTitle>
                       <DialogContent>
                         {showSpoil ? (
                           <Typography>{ReviewByIdAPI?.spoil_text || ''}</Typography>
                         ) : (
-                          <Typography>สปอยยังไม่ถูกเปิดเผย</Typography>
+                          <Typography>Spoilers have not yet been revealed.</Typography>
                         )}
                       </DialogContent>
                     </Dialog>
@@ -543,62 +551,56 @@ export default function movieReviewPage() {
               </Grid>
             </Grid>
           </Grid>
-
           {/* <style>
             {`
-          .carousel .control-arrow.control-prev {
-            left: 350px; 
-          }
-          .carousel .control-arrow.control-next {
-            right: 350px;
-          }
-        `}
-          </style>
+              .carousel .control-arrow.control-prev {
+                left: 350px; 
+              }
+              .carousel .control-arrow.control-next {
+                right: 350px;
+              }
+            `}
+          </style> */}
 
-          <Grid container>
-            <Grid
-              item
-              xs={12}
+          <Carousel
+              infiniteLoop={false}
+              showThumbs={false}
+              centerMode={true}
+              centerSlidePercentage={16}
+              showArrows={true}
+              stopOnHover={true}
+              showStatus={false}
+              showIndicators={false}
               sx={{
                 display: 'flex',
-                justifyContent: 'flex-start',
+                justifyContent: 'center',
+                flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: '8px',
+                width: '100%',
+                '& .control-dots': {
+                  bottom: '-40px',
+                },
+                '& .dot': {
+                  margin: '0 5px',
+                },
               }}
             >
-              <Carousel
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '100%',
-                  marginBottom: '40px',
-                }}
-                interval={1000}
-                stopOnHover={true}
-                infiniteLoop={true}
-                showStatus={false}
-                showIndicators={true}
-                showThumbs={false}
-              >
-                {moviesGenre.map((chunk, index) => (
-                  <Grid container spacing={1} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    {chunk.map((image, idx) => (
-                      <Grid item key={idx} onClick={() => Router.push(`/movieReview/${idx?.review_id}`)}>
-                        <CardMedia
-                          component="img"
-                          image={image}
-                          alt={`Movie Genre ${index * 3 + idx + 1}`}
-                          sx={{ width: 240, height: 140, margin: '3px' }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
+              {moviesGenre?.map((item) => (
+                  <Box
+                    sx={{
+                      width: 200,
+                      height: 150,
+                      marginInline: '8px',
+                    }}
+                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                  >
+                    <img
+                      src={item.image}
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
+                  </Box>
                 ))}
-              </Carousel>
-            </Grid>
-          </Grid> */}
+            </Carousel>
         </Grid>
       </Grid>
       <ToastSuccess openToast={openToast} handleCloseToast={handleCloseToast} text="Post Success" showClose={true} />
