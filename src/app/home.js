@@ -132,6 +132,7 @@ export default function HomePage() {
                         height: '180px',
                         objectFit: 'cover',
                       }}
+                      onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
                     />
                   </Grid>
                 ))}
@@ -200,10 +201,10 @@ export default function HomePage() {
                         transform: 'scale(1.1)',
                       },
                     }}
+                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
                   >
                     <img src={`${item.image}`} 
                          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-                         onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
                     />
                   </Box>
                 </Tooltip>

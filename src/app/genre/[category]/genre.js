@@ -1,9 +1,9 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { Typography, Grid, Box, Rating, Tooltip } from '@mui/material';
 import { axiosInstance } from '@/lib/axiosInstance';
 import { useParams } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const MovieTooltipContent = ({ detail }) => {
   if (!detail) {
@@ -24,6 +24,9 @@ const MovieTooltipContent = ({ detail }) => {
 };
 
 export default function GenrePage() {
+
+  const Router = useRouter();
+
   const [moviesSortByGenre, setMoviesSortByGenre] = useState([]);
   const params = useParams();
 
@@ -87,6 +90,7 @@ export default function GenrePage() {
                       transform: 'scale(1.1)',
                     },
                   }}
+                  onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
                 >
                   <img
                     src={`${item.image}`}

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Typography, Grid, Box, Rating, Tooltip } from '@mui/material';
 import { axiosInstance } from '@/lib/axiosInstance';
+import { useRouter } from "next/navigation";
 
 const MovieTooltipContent = ({ detail }) => {
   if (!detail) {
@@ -22,6 +23,9 @@ const MovieTooltipContent = ({ detail }) => {
 };
 
 export default function MyList() {
+
+  const Router = useRouter();
+
   const [listFavorites, setListFavorites] = useState([]);
 
   const fetchListFavorites = async () => {
@@ -84,6 +88,7 @@ export default function MyList() {
                             transform: 'scale(1.1)',
                           },
                         }}
+                        onClick={() => (Router.push(`/movieReview/${item?.movie_id?.review_id}`))}
                       >
                         <img
                           src={`${item.movie_id.image}`}
