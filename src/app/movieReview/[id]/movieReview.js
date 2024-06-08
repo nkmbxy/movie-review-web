@@ -73,20 +73,21 @@ export default function movieReviewPage() {
   const getReviewByIdAPI = async review_id => {
     try {
       const response = await axiosInstance.get(`/review/getReviewByID/${review_id}`);
-
       return response;
     } catch (error) {
       console.error('Error fetching review by ID:', error);
     }
   };
 
-  const keepGenre = ReviewByIdAPI?.movie_id?.genre_id?.genre
+  const keepGenre = ReviewByIdAPI?.movie_id?.genre_id?.genre;
   const getMoviesGenre = async () => {
-    const respond = await axiosInstance.get(`/genre/movieSortByGenre?genre=${keepGenre}`)
-    setMoviesGenre(respond?.data?.data?.movie_id)
-  }
-
-  // console.log(ReviewByIdAPI?.movie_id?.genre_id?.genre);
+    try {
+      const respond = await axiosInstance.get(`/genre/movieSortByGenre?genre=${keepGenre}`);
+      setMoviesGenre(respond?.data?.data?.movie_id);
+    } catch (error) {
+      console.error('Error fetching movies by genre:', error);
+    }
+  };
 
   const handleCheckFavorite = async () => {
     try {
@@ -131,6 +132,9 @@ export default function movieReviewPage() {
       const response = await createCommentAPI(params.id, commentText);
       if (response !== 'Comment created successfully!') {
         setOpenToast(true);
+        setTimeout(() => {
+          setOpenToast(false);
+        }, 2000);
       }
       setReviewByIdAPI(prev => ({
         ...prev,
@@ -163,21 +167,11 @@ export default function movieReviewPage() {
     setOpenAlertDialogError(false);
   };
 
-  // const chunkMoviesGenre = (moviews, chunkSize) => {
-  //   const chunks = [];
-  //   for (let i = 0; i < moviews.length; i += chunkSize) {
-  //     chunks.push(moviews.slice(i, i + chunkSize));
-  //   }
-  //   return chunks;
-  // };
-
   const handleGetReviewByIdAPI = async () => {
     try {
       const movie_Id = params?.id;
       const res = await getReviewByIdAPI(movie_Id);
-      // const chunkMovies = chunkMoviesGenre(res.moviesGenre, 3);
       setReviewByIdAPI(res.data.review);
-      // setMoviesGenre(chunkMovies);
     } catch (error) {
       console.log(error);
       setOpenAlertDialogError(true);
@@ -551,56 +545,56 @@ export default function movieReviewPage() {
               </Grid>
             </Grid>
           </Grid>
-          {/* <style>
+
+          <style>
             {`
-              .carousel .control-arrow.control-prev {
-                left: 350px; 
-              }
-              .carousel .control-arrow.control-next {
-                right: 350px;
-              }
-            `}
-          </style> */}
+    .carousel .control-arrow.control-prev {
+      left: 350px; 
+    }
+    .carousel .control-arrow.control-next {
+      right: 0px;
+    }
+  `}
+          </style>
 
           <Carousel
-              infiniteLoop={false}
-              showThumbs={false}
-              centerMode={true}
-              centerSlidePercentage={16}
-              showArrows={true}
-              stopOnHover={true}
-              showStatus={false}
-              showIndicators={false}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                alignItems: 'center',
-                width: '100%',
-                '& .control-dots': {
-                  bottom: '-40px',
-                },
-                '& .dot': {
-                  margin: '0 5px',
-                },
-              }}
-            >
-              {moviesGenre?.map((item) => (
-                  <Box
-                    sx={{
-                      width: 200,
-                      height: 150,
-                      marginInline: '8px',
-                    }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
-                  >
-                    <img
-                      src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                    />
-                  </Box>
-                ))}
-            </Carousel>
+            infiniteLoop={false}
+            showThumbs={false}
+            centerMode={true}
+            centerSlidePercentage={25}
+            showArrows={true}
+            stopOnHover={true}
+            showStatus={false}
+            showIndicators={false}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              '& .control-dots': {
+                bottom: '-40px',
+              },
+              '& .dot': {
+                margin: '0 5px',
+              },
+            }}
+          >
+            {''}
+            {moviesGenre?.map((item, index) => (
+              <Box
+                key={index}
+                sx={{
+                  width: '250px',
+                  height: '150px',
+                  marginInline: '8px',
+                }}
+                onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
+              >
+                <img src={item.image} style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+              </Box>
+            ))}
+          </Carousel>
         </Grid>
       </Grid>
       <ToastSuccess openToast={openToast} handleCloseToast={handleCloseToast} text="Post Success" showClose={true} />

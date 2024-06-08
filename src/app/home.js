@@ -1,15 +1,13 @@
 'use client';
-import { Grid, TextField, Button, Box, Typography, Tooltip, Rating } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Grid, TextField, Button, Box, Typography, Tooltip, Rating } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { axiosInstance } from '@/lib/axiosInstance';
-import { useRouter } from "next/navigation";
-import { useNavigate } from "react-router-dom";
-
+import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 const MovieTooltipContent = ({ detail }) => {
-
   const router = useRouter();
 
   if (!detail) {
@@ -45,12 +43,11 @@ const MovieTooltipContent = ({ detail }) => {
           </Typography>
         )}
       </Typography>
-  </Box>
+    </Box>
   );
 };
 
 export default function HomePage() {
-  
   const Router = useRouter();
 
   const [searchMovies, setSearchMovies] = useState('');
@@ -63,29 +60,29 @@ export default function HomePage() {
   const [thaiMovies, setThaiMovies] = useState([]);
 
   const getRandomMovies = async () => {
-    const response = await axiosInstance.get('/movie/random')
+    const response = await axiosInstance.get('/movie/random');
     setRandomMovies(response.data.data);
-  }
+  };
   const getChineseMovies = async () => {
-    const respond = await axiosInstance.get('/movie/country?country=Chinese')
-    setChineseMovies(respond.data)
-  }
+    const respond = await axiosInstance.get('/movie/country?country=Chinese');
+    setChineseMovies(respond.data);
+  };
   const getEnglishMovies = async () => {
-    const respond = await axiosInstance.get('/movie/country?country=English')
-    setEnglishMovies(respond.data)
-  }
+    const respond = await axiosInstance.get('/movie/country?country=English');
+    setEnglishMovies(respond.data);
+  };
   const getJapaneseMovies = async () => {
-    const respond = await axiosInstance.get('/movie/country?country=Japanese')
-    setJapaneseMovies(respond.data)
-  }
+    const respond = await axiosInstance.get('/movie/country?country=Japanese');
+    setJapaneseMovies(respond.data);
+  };
   const getKoreanMovies = async () => {
-    const respond = await axiosInstance.get('/movie/country?country=Korean')
-    setKoreanMovies(respond.data)
-  }
+    const respond = await axiosInstance.get('/movie/country?country=Korean');
+    setKoreanMovies(respond.data);
+  };
   const getThaiMovies = async () => {
-    const respond = await axiosInstance.get('/movie/country?country=Thai')
-    setThaiMovies(respond.data)
-  }
+    const respond = await axiosInstance.get('/movie/country?country=Thai');
+    setThaiMovies(respond.data);
+  };
 
   useEffect(() => {
     getRandomMovies();
@@ -94,27 +91,17 @@ export default function HomePage() {
     getJapaneseMovies();
     getKoreanMovies();
     getThaiMovies();
-  }, [])
+  }, []);
 
   const handleSearchMovies = async () => {
-    const respond = await axiosInstance.get(`/movie/search?title=${searchMovies}`)
-    console.log(respond.data)
-    setSearchResult(respond.data)
-  }
-
-  // console.log(searchMovies);
-  // console.log(randomMovies);
-  console.log(chineseMovies);
-  // console.log(englishMovies);
-  // console.log(japaneseMovies);
-  // console.log(koreanMovies);
-  // console.log(thaiMovies);
-  
+    const respond = await axiosInstance.get(`/movie/search?title=${searchMovies}`);
+    console.log(respond.data);
+    setSearchResult(respond.data);
+  };
 
   return (
     <>
-      {
-        searchResult.length>0 ? 
+      {searchResult.length > 0 ? (
         <Grid
           container
           style={{
@@ -134,7 +121,7 @@ export default function HomePage() {
                 textDecoration: 'none',
                 color: '#ffffff',
               }}
-              >
+            >
               Result
             </Typography>
             <Grid container sx={{ width: '100%', padding: 2 }}>
@@ -155,15 +142,16 @@ export default function HomePage() {
                         height: '180px',
                         objectFit: 'cover',
                       }}
-                      onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                      onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                     />
                   </Grid>
                 ))}
               </Grid>
             </Grid>
           </Grid>
-        </Grid>:
-          <Grid container style={{ backgroundColor: '#000000', minHeight: '91.5vh' }}>
+        </Grid>
+      ) : (
+        <Grid container style={{ backgroundColor: '#000000', minHeight: '91.5vh' }}>
           <Grid item sx={{ mb: 8, width: '100%' }}>
             <Grid
               item
@@ -179,9 +167,7 @@ export default function HomePage() {
                 placeholder="Search for topics of interest"
                 variant="outlined"
                 value={searchMovies}
-                onChange={
-                  (e) => setSearchMovies(e.target.value)
-                }
+                onChange={e => setSearchMovies(e.target.value)}
                 sx={{
                   backgroundColor: '#ffffff',
                   display: 'flex',
@@ -211,7 +197,7 @@ export default function HomePage() {
               </Grid>
             </Grid>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {randomMovies.map((item) => (
+              {randomMovies.map(item => (
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
@@ -223,11 +209,9 @@ export default function HomePage() {
                         transform: 'scale(1.1)',
                       },
                     }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                    onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                   >
-                    <img src={`${item.image}`} 
-                         style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                    />
+                    <img src={`${item.image}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </Box>
                 </Tooltip>
               ))}
@@ -235,20 +219,22 @@ export default function HomePage() {
             <Typography
               variant="h6"
               sx={{
-                margin: '40px 0px 30px 40px',
+                ml: 5,
+                marginTop: 4,
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
                 color: '#ffffff',
+                marginBottom: '15px',
               }}
             >
-              Made in Chinese
+              Made in China
             </Typography>
             <Carousel
               infiniteLoop={false}
               showThumbs={false}
               centerMode={true}
-              centerSlidePercentage={16}
+              centerSlidePercentage={14.5}
               showArrows={true}
               stopOnHover={true}
               showStatus={false}
@@ -267,44 +253,48 @@ export default function HomePage() {
                 },
               }}
             >
-              {chineseMovies.map((item) => (
+              {chineseMovies.map(item => (
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 250,
-                      height: 150,
-                      marginInline: '10px',
+                      marginInline: '40px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
                       },
                     }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                    onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: '200px',
+                        height: '120px',
+                        objectFit: 'cover',
+                      }}
                     />
                   </Box>
                 </Tooltip>
               ))}
             </Carousel>
             <Typography
-              variant="h6" 
-                sx={{
-                  margin: '40px 0px 30px 40px',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  textDecoration: 'none',
-                  color: '#ffffff',
-                }}>
-                Made in England 
+              variant="h6"
+              sx={{
+                ml: 5,
+                marginTop: 4,
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                textDecoration: 'none',
+                color: '#ffffff',marginBottom: '15px',
+              }}
+            >
+              Made in England
             </Typography>
             <Carousel
               infiniteLoop={false}
               showThumbs={false}
               centerMode={true}
-              centerSlidePercentage={16}
+              centerSlidePercentage={14.5}
               showArrows={true}
               stopOnHover={true}
               showStatus={false}
@@ -323,44 +313,48 @@ export default function HomePage() {
                 },
               }}
             >
-              {englishMovies.map((item) => (
+              {englishMovies.map(item => (
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 250,
-                      height: 150,
-                      marginInline: '10px',
+                      marginInline: '40px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
                       },
                     }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                    onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: '200px',
+                        height: '120px',
+                        objectFit: 'cover',
+                      }}
                     />
                   </Box>
                 </Tooltip>
               ))}
             </Carousel>
             <Typography
-              variant="h6" 
-                sx={{
-                  margin: '40px 0px 30px 40px',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  textDecoration: 'none',
-                  color: '#ffffff',
-                }}>
-                Made in Japan 
+              variant="h6"
+              sx={{
+                ml: 5,
+                marginTop: 4,
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                textDecoration: 'none',
+                color: '#ffffff',marginBottom: '15px',
+              }}
+            >
+              Made in Japan
             </Typography>
             <Carousel
               infiniteLoop={false}
               showThumbs={false}
               centerMode={true}
-              centerSlidePercentage={16}
+              centerSlidePercentage={14.5}
               showArrows={true}
               stopOnHover={true}
               showStatus={false}
@@ -379,44 +373,48 @@ export default function HomePage() {
                 },
               }}
             >
-              {japaneseMovies.map((item) => (
+              {japaneseMovies.map(item => (
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 250,
-                      height: 150,
-                      marginInline: '10px',
+                      marginInline: '40px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
                       },
                     }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                    onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: '200px',
+                        height: '120px',
+                        objectFit: 'cover',
+                      }}
                     />
                   </Box>
                 </Tooltip>
               ))}
             </Carousel>
             <Typography
-              variant="h6" 
-                sx={{
-                  margin: '40px 0px 30px 40px',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  textDecoration: 'none',
-                  color: '#ffffff',
-                }}>
-                Made in Korea 
+              variant="h6"
+              sx={{
+                ml: 5,
+                marginTop: 4,
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                textDecoration: 'none',
+                color: '#ffffff',marginBottom: '15px',
+              }}
+            >
+              Made in Korea
             </Typography>
             <Carousel
               infiniteLoop={false}
               showThumbs={false}
               centerMode={true}
-              centerSlidePercentage={16}
+              centerSlidePercentage={14.5}
               showArrows={true}
               stopOnHover={true}
               showStatus={false}
@@ -435,44 +433,48 @@ export default function HomePage() {
                 },
               }}
             >
-              {koreanMovies.map((item) => (
+              {koreanMovies.map(item => (
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 250,
-                      height: 150,
-                      marginInline: '10px',
+                      marginInline: '40px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
                       },
                     }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                    onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: '200px',
+                        height: '120px',
+                        objectFit: 'cover',
+                      }}
                     />
                   </Box>
                 </Tooltip>
               ))}
             </Carousel>
             <Typography
-              variant="h6" 
-                sx={{
-                  margin: '40px 0px 30px 40px',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  textDecoration: 'none',
-                  color: '#ffffff',
-                }}>
-                Made in Thai 
+              variant="h6"
+              sx={{
+                ml: 5,
+                marginTop: 4,
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                textDecoration: 'none',
+                color: '#ffffff',marginBottom: '15px',
+              }}
+            >
+              Made in Thai
             </Typography>
             <Carousel
               infiniteLoop={false}
               showThumbs={false}
               centerMode={true}
-              centerSlidePercentage={16}
+              centerSlidePercentage={14.5}
               showArrows={true}
               stopOnHover={true}
               showStatus={false}
@@ -491,31 +493,33 @@ export default function HomePage() {
                 },
               }}
             >
-              {thaiMovies.map((item) => (
+              {thaiMovies.map(item => (
                 <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
                   <Box
                     sx={{
-                      width: 250,
-                      height: 150,
-                      marginInline: '10px',
+                      marginInline: '40px',
                       transition: 'transform 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1)',
                       },
                     }}
-                    onClick={() => (Router.push(`/movieReview/${item?.review_id}`))}
+                    onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
                   >
                     <img
                       src={item.image}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: '200px',
+                        height: '120px',
+                        objectFit: 'cover',
+                      }}
                     />
                   </Box>
                 </Tooltip>
               ))}
             </Carousel>
           </Grid>
-      </Grid>
-      }
+        </Grid>
+      )}
     </>
   );
 }
