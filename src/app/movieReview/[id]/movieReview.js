@@ -29,6 +29,8 @@ import AlertDialogError from '../../../components/alertDialog/alertError';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { makeStyles } from '@mui/styles';
 import { axiosInstance } from '@/lib/axiosInstance';
+import { useRouter } from 'next/navigation';
+import ToastSuccess from '../../../components/toast';
 
 const useStyles = makeStyles({
   boxComment: {
@@ -52,6 +54,7 @@ const useStyles = makeStyles({
 export default function movieReviewPage() {
   const params = useParams();
   const classes = useStyles();
+  const Router = useRouter();
   const [open, setOpen] = useState(false);
   const [showSpoil, setShowSpoil] = useState(false);
   const [ReviewByIdAPI, setReviewByIdAPI] = useState(null);
@@ -62,6 +65,21 @@ export default function movieReviewPage() {
   const [moviesGenre, setMoviesGenre] = useState([]);
   const [commentText, setCommentText] = useState('');
   const [checkFavorite, setCheckFavorite] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
+
+  const getReviewByIdAPI = async review_id => {
+    try {
+      const response = await axiosInstance.get(`/review/getReviewByID/${review_id}`);
+
+      return response;
+    } catch (error) {
+      console.error('Error fetching review by ID:', error);
+    }
+  };
 
   const handleCheckFavorite = async () => {
     try {
@@ -71,7 +89,6 @@ export default function movieReviewPage() {
       console.log('Error checking favorite:', error);
     }
   };
- 
 
   const handleFavorite = async () => {
     try {
@@ -91,29 +108,34 @@ export default function movieReviewPage() {
     }
   };
 
-  const handleCommentSubmit = useCallback(
-    async e => {
-      e.preventDefault();
-      try {
-        const response = await createCommentAPI(params.id, commentText);
-        if (response !== 'Comment created successfully!') {
-          setOpenAlertDialogError(true);
-          setMessageDialogError('Failed to create comment');
-          setTitleDialogError('Error');
-        }
-        setReviewByIdAPI(prev => ({
-          ...prev,
-          comments: [{ comment_text: commentText, like_counter: 0 }, ...prev.comments],
-        }));
-        setCommentText('');
-      } catch (error) {
-        setOpenAlertDialogError(true);
-        setMessageDialogError('Error creating comment:');
-        setTitleDialogError('Error');
+  const createCommentAPI = async (review_id, comment_text) => {
+    try {
+      const response = await axiosInstance.post(`/comment/createComment`, {
+        review_id,
+        comment_text,
+      });
+      return response;
+    } catch (error) {}
+  };
+
+  const handleCommentSubmit = async e => {
+    e.preventDefault();
+    try {
+      const response = await createCommentAPI(params.id, commentText);
+      if (response !== 'Comment created successfully!') {
+        setOpenToast(true);
       }
-    },
-    [commentText, params.id]
-  );
+      setReviewByIdAPI(prev => ({
+        ...prev,
+        comments: [{ comment_text: commentText, like_counter: 0 }, ...prev.comments],
+      }));
+      setCommentText('');
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      setMessageDialogError('Error creating comment:');
+      setTitleDialogError('Error');
+    }
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -134,21 +156,21 @@ export default function movieReviewPage() {
     setOpenAlertDialogError(false);
   };
 
-  const chunkMoviesGenre = (moviews, chunkSize) => {
-    const chunks = [];
-    for (let i = 0; i < moviews.length; i += chunkSize) {
-      chunks.push(moviews.slice(i, i + chunkSize));
-    }
-    return chunks;
-  };
+  // const chunkMoviesGenre = (moviews, chunkSize) => {
+  //   const chunks = [];
+  //   for (let i = 0; i < moviews.length; i += chunkSize) {
+  //     chunks.push(moviews.slice(i, i + chunkSize));
+  //   }
+  //   return chunks;
+  // };
 
-  const handleGetReviewByIdAPI = useCallback(async () => {
+  const handleGetReviewByIdAPI = async () => {
     try {
       const movie_Id = params?.id;
       const res = await getReviewByIdAPI(movie_Id);
-      const chunkMovies = chunkMoviesGenre(res.moviesGenre, 3);
-      setReviewByIdAPI(res.review);
-      setMoviesGenre(chunkMovies);
+      // const chunkMovies = chunkMoviesGenre(res.moviesGenre, 3);
+      setReviewByIdAPI(res.data.review);
+      // setMoviesGenre(chunkMovies);
     } catch (error) {
       console.log(error);
       setOpenAlertDialogError(true);
@@ -156,14 +178,14 @@ export default function movieReviewPage() {
       setTitleDialogError('Error');
       return;
     }
-  }, [params?.id]);
+  };
 
   useEffect(() => {
     handleGetReviewByIdAPI();
     handleCheckFavorite();
-  }, [handleGetReviewByIdAPI,handleCheckFavorite]);
+  }, [handleGetReviewByIdAPI, handleCheckFavorite]);
 
-  const handleSubmit = useCallback(async e => {
+  const handleSubmit = async e => {
     try {
       e.preventDefault();
       const response = await createCommentAPI(e.target[0].value, e.target[1].value);
@@ -172,7 +194,7 @@ export default function movieReviewPage() {
       setMessageDialogError('Failed to login');
       setTitleDialogError('Error');
     }
-  }, []);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -522,7 +544,7 @@ export default function movieReviewPage() {
             </Grid>
           </Grid>
 
-          <style>
+          {/* <style>
             {`
           .carousel .control-arrow.control-prev {
             left: 350px; 
@@ -563,7 +585,7 @@ export default function movieReviewPage() {
                 {moviesGenre.map((chunk, index) => (
                   <Grid container spacing={1} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
                     {chunk.map((image, idx) => (
-                      <Grid item key={idx}>
+                      <Grid item key={idx} onClick={() => Router.push(`/movieReview/${idx?.review_id}`)}>
                         <CardMedia
                           component="img"
                           image={image}
@@ -576,9 +598,10 @@ export default function movieReviewPage() {
                 ))}
               </Carousel>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
+      <ToastSuccess openToast={openToast} handleCloseToast={handleCloseToast} text="Post Success" showClose={true} />
     </form>
   );
 }

@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import { axiosInstance } from '@/lib/axiosInstance';
 
 const signupAPI = async (email, password, username) => {
