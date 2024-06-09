@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/lib/axiosInstance';
 
 const signupAPI = async (email, password, username) => {
-  const response = await AxaxiosInstanceios.post(`/user/register`, {
+  const response = await axiosInstance.post(`/user/register`, {
     email,
     password,
     username,
