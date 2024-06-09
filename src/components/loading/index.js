@@ -1,6 +1,6 @@
-import React from "react";
-import { Grid } from "@mui/material";
-import ClipLoader from "react-spinners/ClipLoader";
+import React from 'react';
+import { Grid } from '@mui/material';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 function MyLoader() {
   return (
@@ -8,13 +8,14 @@ function MyLoader() {
       container
       className="sweet-loading"
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#000000',
       }}
     >
-      <ClipLoader color="lightpink" loading={true} size={200} />
+      <ClipLoader color="#9b9b9b" loading={true} size={160} />
     </Grid>
   );
 }
