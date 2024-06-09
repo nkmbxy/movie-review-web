@@ -135,7 +135,17 @@ export default function HomePage() {
               >
                 {searchResult?.map((item, index) => (
                   <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
-                    <Grid key={index} sx={{ margin: 1 }}>
+                    <Grid
+                      key={index}
+                      sx={{
+                        marginInline: '40px',
+                        margin: 1,
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.1)',
+                        },
+                      }}
+                    >
                       <img
                         src={`${item.image}`}
                         style={{

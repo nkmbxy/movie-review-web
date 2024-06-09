@@ -40,7 +40,7 @@ export default function Login() {
         const response = await loginAPI(formData.email, formData.password);
         if (response?.status === 200) {
           console.log('Login successful:', response);
-         
+
           setOpenToast(true);
           setToastText('Login Successful');
           router.push('/');
