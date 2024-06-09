@@ -2,10 +2,9 @@
 import { useState, useEffect } from 'react';
 import { Typography, Grid, Box, Rating, Tooltip } from '@mui/material';
 import { axiosInstance } from '@/lib/axiosInstance';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 const MovieTooltipContent = ({ detail }) => {
-
   const router = useRouter();
 
   if (!detail) {
@@ -41,12 +40,11 @@ const MovieTooltipContent = ({ detail }) => {
           </Typography>
         )}
       </Typography>
-  </Box>
+    </Box>
   );
 };
 
 export default function MyList() {
-
   const Router = useRouter();
 
   const [listFavorites, setListFavorites] = useState([]);
@@ -111,12 +109,12 @@ export default function MyList() {
                             transform: 'scale(1.1)',
                           },
                         }}
-                        onClick={() => (Router.push(`/movieReview/${item?.movie_id?.review_id}`))}
+                        onClick={() => Router.push(`/movieReview/${item?.movie_id?.review_id}`)}
                       >
                         <img
                           src={`${item.movie_id.image}`}
                           style={{
-                            width: '265px',
+                            width: '260px',
                             height: '165px',
                             objectFit: 'cover',
                           }}
