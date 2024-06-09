@@ -279,7 +279,7 @@ export default function createReview() {
                 paddingTop: '10px',
               }}
             >
-              Fun :
+              Score :
             </InputLabel>
             <Select
               id="funRates"

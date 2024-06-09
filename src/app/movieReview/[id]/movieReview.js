@@ -79,38 +79,19 @@ export default function movieReviewPage() {
     }
   };
 
-  const keepGenre = ReviewByIdAPI?.movie_id?.genre_id?.genre;
-  const getMoviesGenre = async () => {
+  const getMoviesGenre = async genre => {
     try {
-      const respond = await axiosInstance.get(`/genre/movieSortByGenre?genre=${keepGenre}`);
-      setMoviesGenre(respond?.data?.data?.movie_id);
+      const response = await axiosInstance.get(`/genre/movieSortByGenre?genre=${genre}`);
+      setMoviesGenre(response?.data?.data?.movie_id);
     } catch (error) {
       console.error('Error fetching movies by genre:', error);
     }
   };
 
-  const handleCheckFavorite = async () => {
+  const handleCheckFavorite = async movie_id => {
     try {
-      const response = await axiosInstance.get(`/favorite/favColor/${ReviewByIdAPI?.movie_id?._id}`);
-      setCheckFavorite(response.data.status);
-    } catch (error) {
-      console.log('Error checking favorite:', error);
-    }
-  };
-
-  const handleFavorite = async () => {
-    try {
-      if (checkFavorite === false) {
-        const response = await axiosInstance.post(`/favorite/add/${ReviewByIdAPI?.movie_id?._id}`);
-        if (response.status === 200) {
-          setCheckFavorite(true);
-        }
-      } else {
-        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIdAPI?.movie_id?._id}`);
-        if (response.status === 200) {
-          setCheckFavorite(false);
-        }
-      }
+      const response = await axiosInstance.get(`/favorite/favColor/${movie_id}`);
+      setCheckFavorite(response?.data?.status);
     } catch (error) {
       console.log('Error checking favorite:', error);
     }
@@ -171,6 +152,8 @@ export default function movieReviewPage() {
     try {
       const movie_Id = params?.id;
       const res = await getReviewByIdAPI(movie_Id);
+      getMoviesGenre(res.data?.review?.movie_id?.genre_id?.genre);
+      handleCheckFavorite(res.data?.review?.movie_id?._id);
       setReviewByIdAPI(res.data.review);
     } catch (error) {
       console.log(error);
@@ -181,11 +164,28 @@ export default function movieReviewPage() {
     }
   };
 
+  const handleFavorite = async () => {
+    try {
+      if (checkFavorite === false) {
+        const response = await axiosInstance.post(`/favorite/add/${ReviewByIdAPI?.movie_id?._id}`);
+        if (response.status === 200) {
+          setCheckFavorite(true);
+        }
+      } else {
+        const response = await axiosInstance.delete(`/favorite/delete/${ReviewByIdAPI?.movie_id?._id}`);
+        if (response.status === 200) {
+          setCheckFavorite(false);
+        }
+      }
+      handleGetReviewByIdAPI();
+    } catch (error) {
+      console.log('Error checking favorite:', error);
+    }
+  };
+
   useEffect(() => {
-    getMoviesGenre();
     handleGetReviewByIdAPI();
-    handleCheckFavorite();
-  }, [getMoviesGenre, handleGetReviewByIdAPI, handleCheckFavorite]);
+  }, []);
 
   const handleSubmit = async e => {
     try {

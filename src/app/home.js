@@ -134,17 +134,19 @@ export default function HomePage() {
                 }}
               >
                 {searchResult?.map((item, index) => (
-                  <Grid key={index} sx={{ margin: 1 }}>
-                    <img
-                      src={`${item.image}`}
-                      style={{
-                        width: '280px',
-                        height: '180px',
-                        objectFit: 'cover',
-                      }}
-                      onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
-                    />
-                  </Grid>
+                  <Tooltip key={item.image} title={<MovieTooltipContent detail={item} />} arrow>
+                    <Grid key={index} sx={{ margin: 1 }}>
+                      <img
+                        src={`${item.image}`}
+                        style={{
+                          width: '280px',
+                          height: '180px',
+                          objectFit: 'cover',
+                        }}
+                        onClick={() => Router.push(`/movieReview/${item?.review_id}`)}
+                      />
+                    </Grid>
+                  </Tooltip>
                 ))}
               </Grid>
             </Grid>
@@ -285,7 +287,8 @@ export default function HomePage() {
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
-                color: '#ffffff',marginBottom: '15px',
+                color: '#ffffff',
+                marginBottom: '15px',
               }}
             >
               Made in England
@@ -345,7 +348,8 @@ export default function HomePage() {
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
-                color: '#ffffff',marginBottom: '15px',
+                color: '#ffffff',
+                marginBottom: '15px',
               }}
             >
               Made in Japan
@@ -405,7 +409,8 @@ export default function HomePage() {
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
-                color: '#ffffff',marginBottom: '15px',
+                color: '#ffffff',
+                marginBottom: '15px',
               }}
             >
               Made in Korea
@@ -465,7 +470,8 @@ export default function HomePage() {
                 fontWeight: 700,
                 letterSpacing: '.1rem',
                 textDecoration: 'none',
-                color: '#ffffff',marginBottom: '15px',
+                color: '#ffffff',
+                marginBottom: '15px',
               }}
             >
               Made in Thai
